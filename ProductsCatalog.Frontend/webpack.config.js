@@ -27,6 +27,7 @@ module.exports = {
                 exclude: /(node-modules)/,
                 loader: 'babel-loader',
                 options: {
+                    compact: false,
                     presets: ["@babel/preset-env", "@babel/preset-react"],
                     plugins: [
                         "@babel/plugin-proposal-class-properties",

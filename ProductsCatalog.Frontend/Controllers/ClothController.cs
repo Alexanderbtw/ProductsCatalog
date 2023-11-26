@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
+using ProductsCatalog.DAL;
+using ProductsCatalog.DAL.Repositories;
 
 namespace ProductsCatalog.Frontend.Controllers
 {
@@ -7,34 +9,25 @@ namespace ProductsCatalog.Frontend.Controllers
     [Route("api/[controller]")]
     public class ClothController : Controller
     {
+        private readonly EFRepository<Cloth, ProductContext> clothRepo;
+
+        public ClothController(EFRepository<Cloth, ProductContext> repo)
+        {
+            clothRepo = repo;
+        }
+
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            Cloth sneakers = new()
-            {
-                Id = 3,
-                Title = "Mickle Jordan",
-                Price = 1010,
-                Description = "Duck",
-                CreationTime = DateTime.Now,
-                Color = "Red",
-                Material = "Eco",
-                Size = "44"
-            };
-            Cloth shirt = new()
-            {
-                Id = 4,
-                CreationTime = DateTime.UtcNow,
-                Price = 1000,
-                Description = "Not",
-                Color = "black",
-                Material = "cotton",
-                Size = "L",
-                Title = "Shirt"
-            };
-            List<Cloth> clothesInfo = new List<Cloth>() { sneakers, shirt };
-            return new JsonResult(clothesInfo);
+            int totalCount = clothRepo.GetAll().Count();
+
+            List<Cloth> clothesInfo = clothRepo.GetAllWithoutTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return new JsonResult(new { clothesInfo, totalCount });
         }
 
         [HttpGet]
@@ -46,17 +39,11 @@ namespace ProductsCatalog.Frontend.Controllers
                 return NotFound("Id not provided");
             }
 
-            Cloth clothInfo = new()
+            Cloth? clothInfo = clothRepo.GetWithoutTracking(item => item.Id == id.Value);
+            if (clothInfo == null)
             {
-                Id = 5,
-                Title = "Dunk Travis",
-                Price = 1110,
-                Description = "HAHA",
-                CreationTime = DateTime.Now,
-                Color = "Blue",
-                Material = "Eco",
-                Size = "47"
-            };
+                return NotFound();
+            }
 
             return new JsonResult(clothInfo);
         }

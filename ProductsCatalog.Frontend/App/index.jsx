@@ -6,6 +6,8 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
+import "antd/dist/reset.css";
+
 import deviceReadReducer from './Containers/DeviceRead/deviceReadReducer.jsx';
 import deviceIndexReducer from './Containers/DeviceIndex/deviceIndexReducer.jsx';
 import clothReadReducer from './Containers/ClothRead/clothReadReducer.jsx';

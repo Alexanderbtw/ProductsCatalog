@@ -1,69 +1,90 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Table, Spin, Divider } from 'antd';
+import { Link } from "react-router-dom";
+import { SearchOutlined } from "@ant-design/icons";
+
 import { getDevices } from './deviceIndexActions.jsx';
 
-class DeviceIndex extends React.Component {
-    componentDidMount() {
-        this.props.getDevices();
+const colsInfo = [
+    {
+        title: 'ID',
+        dataIndex: 'id',
+        key: 'id'
+    },
+    {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title'
+    },
+    {
+        title: 'Price',
+        dataIndex: 'price',
+        key: 'price'
+    },
+    {
+        title: 'Creation Time',
+        dataIndex: 'creationTime',
+        key: 'creationTime'
+    },
+    {
+        title: 'Cathegory',
+        dataIndex: 'cathegory',
+        key: 'cathegory'
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+            <Link to={"/device/read/" + record.id}><SearchOutlined /> View</Link>
+        )
+    }
+];
+
+function DeviceIndex() {
+    const [current, setCurrent] = React.useState(1);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        document.title = "Products Catalog - Devices"
+        dispatch(getDevices(new Object));
+    }, []);
+
+    function handleTableChange(pagination, filters, sorter) {
+        dispatch(getDevices(pagination));
+
+        setCurrent(pagination.current);
     }
 
-    render() {
-        let devicesInfo = this.props.devicesInfo;
-        let isLoading = this.props.isLoading;
-        let error = this.props.error;
+    let devicesInfo = useSelector(state => state.deviceIndexReducer.devicesInfo).map(item => ({ ...item, key: item.id }));
+    let { isLoading, error, totalCount } = useSelector(state => state.deviceIndexReducer);
 
-        if (isLoading) {
-            return (
-                <div>Loading data...</div>
-            );
-        }
-
-        if (error) {
-            return (
-                <div>Error in data loading: {error}</div>
-            );
-        }
-
+    if (isLoading) {
         return (
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
-                <h3>Devices List</h3>
-                <table style={{ width: "80%", marginLeft: "auto", marginRight: "auto", backgroundColor: "lightgray" }}>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {devicesInfo.map(device => (
-                            <tr key={device.id}>
-                                <td>{device.id}</td>
-                                <td>{device.title}</td>
-                                <td>{device.price}</td>
-                                <td>{device.description}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div style={{ textAlign: "center", marginTop: "200px" }}>
+                <Spin size="large" />
             </div>
         );
     }
-}
 
-let mapStateToProps = (state) => {
-    return {
-        devicesInfo: state.deviceIndexReducer.devicesInfo,
-        isLoading: state.deviceIndexReducer.isLoading,
-        error: state.deviceIndexReducer.error
-    };
+    if (error) {
+        return (
+            <div>Error in data loading: {error}</div>
+        );
+    }
+
+    return (
+        <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <Divider orientation={"center"}>Devices List</Divider>
+            <Table
+                dataSource={devicesInfo}
+                columns={colsInfo}
+                loading={isLoading}
+                pagination={{ total: totalCount, current: current }}
+                onChange={handleTableChange}
+            />
+        </div>
+    );
 };
 
-let mapActionToProps = (dispatch) => {
-    return {
-        getDevices: () => dispatch(getDevices())
-    };
-};
-
-export default connect(mapStateToProps, mapActionToProps)(DeviceIndex);
+export default DeviceIndex;

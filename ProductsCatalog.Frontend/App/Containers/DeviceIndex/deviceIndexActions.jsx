@@ -16,7 +16,8 @@ export function startReceiving() {
 export function receiveDevices(data) {
     return {
         type: GET_DEVICES_SUCCESS,
-        devicesInfo: data
+        devicesInfo: data.devicesInfo,
+        totalCount: data.totalCount
     };
 }
 
@@ -27,11 +28,16 @@ export function errorReceiveDevices(err) {
     };
 }
 
-export function getDevices() {
+export function getDevices(pagination) {
+    let page = !pagination.current ? 1 : pagination.current;
+    let pageSize = !pagination.pageSize ? 10 : pagination.pageSize;
+
     return (dispatch) => {
+        let queryTrailer = '?page=' + page + '&pageSize=' + pageSize;
+
         dispatch(startReceiving());
 
-        fetch(HREF_DeviceController_GetAll)
+        fetch(HREF_DeviceController_GetAll + queryTrailer)
             .then((response) => {
                 var parsedJson = response.json();
                 return parsedJson;

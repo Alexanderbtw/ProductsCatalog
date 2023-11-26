@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
+using ProductsCatalog.DAL;
+using ProductsCatalog.DAL.Repositories;
 
 namespace ProductsCatalog.Frontend.Controllers
 {
@@ -7,20 +9,25 @@ namespace ProductsCatalog.Frontend.Controllers
     [Route("api/[controller]")]
     public class DeviceController : Controller
     {
+        private readonly EFRepository<Device, ProductContext> deviceRepo;
+
+        public DeviceController(EFRepository<Device, ProductContext> repo)
+        {
+            deviceRepo = repo;
+        }
+
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            Device iphone = new Device() {
-                Id = 1, Title = "Iphone 14", Price = 100, Description = "Real Iphone!!!", 
-                Camera = "144MP", CreationTime = DateTime.Now, CPU = "M1", Manufacturer = "Apple"
-            };
-            Device laptop = new Device() { 
-                Id = 2, CreationTime = DateTime.UtcNow, Price = 1000, Description = "Not",
-                CPU = "Intel i10", GPU = "RTX 1010", Manufacturer = "Lenovo", Title = "Legion 5"
-            };
-            List<Device> devicesInfo = new List<Device>() { iphone, laptop };
-            return new JsonResult(devicesInfo);
+            int totalCount = deviceRepo.GetAll().Count();
+
+            List<Device> devicesInfo = deviceRepo.GetAllWithoutTracking()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return new JsonResult( new { devicesInfo, totalCount });
         }
 
         [HttpGet]
@@ -32,17 +39,25 @@ namespace ProductsCatalog.Frontend.Controllers
                 return NotFound("Id not provided");
             }
 
-            Device deviceInfo = new Device() {
-                Id = 1,
-                Title = "Iphone 1",
-                Price = 100,
-                Description = "Real Iphone!!!",
-                Camera = "144MP",
-                CreationTime = DateTime.Now,
-                CPU = "M1",
-                Manufacturer = "Apple"
-            };
+            Device? deviceInfo = deviceRepo.GetWithoutTracking(item => item.Id == id.Value);
+            if (deviceInfo == null)
+            {
+                return NotFound();
+            }
             return new JsonResult(deviceInfo);
+        }
+
+        [HttpPost]
+        [Route("create")]
+        public IActionResult CreateDevice(Device device)
+        {
+            if (device == null)
+            {
+                return BadRequest();
+            }
+
+            deviceRepo.Add(device);
+            return GetSingle(device.Id);
         }
     }
 }

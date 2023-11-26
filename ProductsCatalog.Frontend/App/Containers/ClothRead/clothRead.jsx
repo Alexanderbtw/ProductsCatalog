@@ -1,56 +1,47 @@
 ﻿import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Divider, Spin } from 'antd';
+import { RollbackOutlined } from "@ant-design/icons"
+import { Link, useParams } from "react-router-dom";
+
 import { getCloth } from './clothReadActions.jsx';
+import Product from '../Shared/product.jsx';
 
-class ClothRead extends React.Component {
-    componentDidMount() {
-        this.props.getCloth(1);
-    }
+const ClothRead = () => {
+    const dispatch = useDispatch();
+    const { id } = useParams();
 
-    render() {
-        let clothInfo = this.props.clothInfo;
-        let isLoading = this.props.isLoading;
-        let error = this.props.error;
+    React.useEffect(() => {
+        document.title = "Products Catalog - Cloth #" + id;
+        dispatch(getCloth(id));
+    }, []);
 
-        if (isLoading) {
-            return (
-                <div>Loading data...</div>
-            );
-        }
+    let { clothInfo, isLoading, error } = useSelector(state => state.clothReadReducer);
 
-        if (error) {
-            return (
-                <div>Error id data loading: {error}</div>
-            );
-        }
-
+    if (isLoading) {
         return (
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
-                <h3>Information about single cloth</h3>
-
-                {Object.keys(clothInfo).map(key => (
-                    <div key={key}>
-                        <span style={{ fontWeight: "bold", textTransform: "capitalize" }}>{key}: </span>
-                        <span>{clothInfo[key]}</span>
-                    </div>
-                ))}
+            <div style={{ textAlign: "center", marginTop: "200px" }}>
+                <Spin size="large" />
             </div>
         );
     }
-}
 
-let mapStateToProps = (state) => {
-    return {
-        clothInfo: state.clothReadReducer.clothInfo,
-        isLoading: state.clothReadReducer.isLoading,
-        error: state.clothReadReducer.error
-    };
+    if (error) {
+        return (
+            <div>Error id data loading: {error}</div>
+        );
+    }
+
+    return (
+        <div>
+            <Divider orientation={"center"}>Information about single cloth</Divider>
+
+            <Product productInfo={clothInfo} />
+            <div style={{ textAlign: "center", marginTop: "50px", fontWeight: "bold" }}>
+                <Link to={"/cloth/index"}><RollbackOutlined /> Back to clothes list</Link>
+            </div>
+        </div>
+    );
 };
 
-let mapActionToProps = (dispatch) => {
-    return {
-        getCloth: (id) => dispatch(getCloth(id))
-    };
-};
-
-export default connect(mapStateToProps, mapActionToProps)(ClothRead);
+export default ClothRead;

@@ -1,56 +1,47 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Divider, Spin } from 'antd';
+import { RollbackOutlined } from "@ant-design/icons"
+import { Link, useParams } from "react-router-dom";
+
 import { getDevice } from './deviceReadActions.jsx';
+import Product from '../Shared/product.jsx';
 
-class DeviceRead extends React.Component {
-    componentDidMount() {
-        this.props.getDevice(1);
-    }
+const DeviceRead = () => {
+    const dispatch = useDispatch();
+    const { id } = useParams();
 
-    render() {
-        let deviceInfo = this.props.deviceInfo;
-        let isLoading = this.props.isLoading;
-        let error = this.props.error;
+    React.useEffect(() => {
+        document.title = "Products Catalog - Device #" + id;
+        dispatch(getDevice(id));
+    }, []);
 
-        if (isLoading) {
-            return (
-                <div>Loading data...</div>
-            );
-        }
+    let { deviceInfo, isLoading, error } = useSelector(state => state.deviceReadReducer);
 
-        if (error) {
-            return (
-                <div>Error in data loading: {error}</div>
-            );
-        }
-
+    if (isLoading) {
         return (
-            <div style={{ textAlign: "center", marginTop: "20px" }}>
-                <h3>Information about single device</h3>
-
-                {Object.keys(deviceInfo).map(key => (
-                    <div key={key}>
-                        <span style={{ fontWeight: "bold", textTransform: "capitalize" }}>{key}: </span>
-                        <span>{deviceInfo[key]}</span>
-                    </div>
-                ))}
+            <div style={{ textAlign: "center", marginTop: "200px" }}>
+                <Spin size="large" />
             </div>
         );
     }
-}
 
-let mapStateToProps = (state) => {
-    return {
-        deviceInfo: state.deviceReadReducer.deviceInfo,
-        isLoading: state.deviceReadReducer.isLoading,
-        error: state.deviceReadReducer.error
-    };
+    if (error) {
+        return (
+            <div>Error in data loading: {error}</div>
+        );
+    }
+
+    return (
+        <div>
+            <Divider orientation={"center"}>Information about single device</Divider>
+
+            <Product productInfo={deviceInfo} />
+            <div style={{ textAlign: "center", marginTop: "50px", fontWeight: "bold" }}>
+                <Link to={"/device/index"}><RollbackOutlined /> Back to devices list</Link>
+            </div>
+        </div>
+    );
 };
 
-let mapActionToProps = (dispatch) => {
-    return {
-        getDevice: (id) => dispatch(getDevice(id))
-    };
-};
-
-export default connect(mapStateToProps, mapActionToProps)(DeviceRead);
+export default DeviceRead;
