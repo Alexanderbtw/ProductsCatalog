@@ -20,7 +20,7 @@ export default class App extends React.Component {
                     <Layout className="site-layout">
                         <Content style={{ margin: "0 16px" }}>
                             <div style={{ marginTop: "35px" }}>
-                                <h2 style={{ marginTop: "30px" }}>{document.title}</h2>
+                                <h2 style={{ marginTop: "30px", textAlign: "center" }}>{document.title}</h2>
                                 <hr></hr>
 
                                 <Routes>

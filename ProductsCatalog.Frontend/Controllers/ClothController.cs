@@ -47,5 +47,21 @@ namespace ProductsCatalog.Frontend.Controllers
 
             return new JsonResult(clothInfo);
         }
+
+        [HttpPost]
+        [Route("create")]
+        public IActionResult CreateCloth(Cloth cloth)
+        {
+            if (cloth == null)
+            {
+                return BadRequest();
+            }
+
+            cloth.CreationTime = DateTime.UtcNow;
+            clothRepo.Add(cloth);
+            clothRepo.Save();
+
+            return Content(cloth.Id.ToString());
+        }
     }
 }

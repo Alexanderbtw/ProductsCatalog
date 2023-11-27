@@ -2,7 +2,7 @@ import {
     GET_DEVICE_LOADING_IN_PROGRESS,
     GET_DEVICE_SUCCESS,
     GET_DEVICE_ERROR
-} from './deviceReadConstants.jsx'
+} from './deviceReadConstants.jsx';
 
 const initialState = {
     deviceInfo: {

@@ -2,6 +2,8 @@
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Repositories;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ProductsCatalog.Frontend.Controllers
 {
@@ -56,8 +58,11 @@ namespace ProductsCatalog.Frontend.Controllers
                 return BadRequest();
             }
 
+            device.CreationTime = DateTime.UtcNow;
             deviceRepo.Add(device);
-            return GetSingle(device.Id);
+            deviceRepo.Save();
+
+            return Content(device.Id.ToString());
         }
     }
 }
