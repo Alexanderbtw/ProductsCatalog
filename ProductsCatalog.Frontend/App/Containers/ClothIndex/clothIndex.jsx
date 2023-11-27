@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Spin, Divider } from 'antd';
 import { Link } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
 
 import { getClothes } from './clothIndexActions.jsx';
 
@@ -14,8 +13,10 @@ const colsInfo = [
     },
     {
         title: 'Title',
-        dataIndex: 'title',
-        key: 'title'
+        key: 'title',
+        render: (text, record) => (
+            <Link to={"/cloth/read/" + record.id}>{record.title}</Link>
+        )
     },
     {
         title: 'Price',
@@ -31,13 +32,6 @@ const colsInfo = [
         title: 'Cathegory',
         dataIndex: 'cathegory',
         key: 'cathegory'
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-            <Link to={"/cloth/read/" + record.id}><SearchOutlined /> View</Link>
-        )
     }
 ];
 

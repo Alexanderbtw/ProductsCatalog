@@ -64,5 +64,19 @@ namespace ProductsCatalog.Frontend.Controllers
 
             return Content(device.Id.ToString());
         }
+
+        [HttpDelete]
+        [Route("delete/{id?}")]
+        public IActionResult DeleteDevice([FromRoute] int? id)
+        {
+            if (!id.HasValue)
+            {
+                return NotFound("Id not provided");
+            }
+
+            deviceRepo.Delete(new Device() { Id = (int)id });
+            deviceRepo.Save();
+            return Ok();
+        }
     }
 }

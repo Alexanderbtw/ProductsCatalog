@@ -63,5 +63,19 @@ namespace ProductsCatalog.Frontend.Controllers
 
             return Content(cloth.Id.ToString());
         }
+
+        [HttpDelete]
+        [Route("delete/{id?}")]
+        public IActionResult ClothDelete([FromRoute] int? id)
+        {
+            if (!id.HasValue)
+            {
+                return NotFound("Id not provided");
+            }
+
+            clothRepo.Delete(new Cloth() { Id = (int)id });
+            clothRepo.Save();
+            return Ok();
+        }
     }
 }
