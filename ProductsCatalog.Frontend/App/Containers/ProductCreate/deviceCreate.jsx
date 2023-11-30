@@ -58,8 +58,15 @@ function DeviceCreate() {
             <Form.Item name="title" label="Title" required hasFeedback > 
                 <Input/>
             </Form.Item>
-            <Form.Item name="price" label="Price" required hasFeedback >
-                <InputNumber min={0} />
+            <Form.Item name="price" label="Price" required hasFeedback>
+                <InputNumber
+                    style={{ width: 'auto' }}
+                    min={0}
+                    max={1000000}
+                    controls={false}
+                    precision={2}
+                    addonBefore="$"
+                />
             </Form.Item>
             <Form.Item name="cathegory" label="Cathegory" required hasFeedback>
                 <Input />

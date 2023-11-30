@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Divider, Spin, Popconfirm, Button } from 'antd';
-import { RollbackOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons"
-import { Link, useParams } from "react-router-dom";
+import { Divider, Spin } from 'antd';
+import { useParams } from "react-router-dom";
 
 import { getDevice } from './deviceReadActions.jsx';
 import Product from '../Shared/product.jsx';
+import ProductSettings from '../Shared/productSettings.jsx';
 
 const DeviceRead = () => {
     const dispatch = useDispatch();
@@ -54,28 +54,12 @@ const DeviceRead = () => {
     return (
         <div>
             <Divider orientation={"center"}>Information about single device</Divider>
-
-            <Product productInfo={ deviceInfo } />
-            <div style={{ marginTop: "50px", fontWeight: "bold", display: "flex", flexDirection: "row", gap: "20px", justifyContent: "center" }}>
-                <Link to={"/device/index"}>
-                    <Button type="primary">
-                        <RollbackOutlined />
-                    </Button>
-                </Link>
-                <Link to={"/device/edit"}>
-                    <Button type="primary">
-                        <EditOutlined />
-                    </Button>
-                </Link>
-                <Popconfirm
-                    title="Sure to delete?"
-                    onConfirm={ () => deleteHandler(deviceInfo.id) }
-                >
-                    <Button type="primary">
-                        <DeleteOutlined />
-                    </Button>
-                </Popconfirm>
-            </div>
+            <Product productInfo={deviceInfo} />
+            <ProductSettings
+                deleteHandler={deleteHandler}
+                productInfo={deviceInfo}
+                productCathegory="device"
+            />
         </div>
     );
 };

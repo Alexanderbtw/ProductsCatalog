@@ -31,9 +31,11 @@ const colsInfo = [
     },
     {
         title: 'Price',
-        dataIndex: 'price',
         key: 'price',
-        width: '10%'
+        width: '10%',
+        render: (text, record) => (
+            <>{"$" + record.price}</>
+        )
     },
     {
         title: 'Description',

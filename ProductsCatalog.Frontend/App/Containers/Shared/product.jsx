@@ -2,21 +2,42 @@
 import { Descriptions, Row, Col, Image } from 'antd';
 
 function Product(props) {
+    const items = Object.keys(props.productInfo).filter(key => props.productInfo[key] && key != 'picture').map(key => {
+        let value = props.productInfo[key];
+
+        if (key == "creationTime") {
+            value = new Date(value).toLocaleDateString("");
+        }
+        else if (key == "price") {
+            value = "$" + value;
+        } 
+
+        return (
+            {
+                key: key,
+                label: key.charAt(0).toUpperCase() + key.slice(1),
+                children: value
+            }
+        );
+    });
+
     return (
-        <Row>
-            <Col span={4}>
+        <Row gutter={[16, 16]}>
+            <Col span={8}>
                 <Image
-                    src={ props.productInfo.picture ? 'data:image/jpeg;base64,' + props.productInfo.picture : '/images/image_error_full.png' }
+                    fallback='/images/image_error_full.png'
+                    src={'data:image/jpeg;base64,' + props.productInfo.picture}
                     alt="Not Found"
+                    style={{ borderRadius: "8px" }}
                 />
             </Col>
-            <Col span={20}>
-                <Descriptions bordered column={2}>
-                    {Object.keys(props.productInfo).map(key => (
-                        props.productInfo[key] && key != 'picture' ?
-                        <Descriptions.Item key={key} label={key.charAt(0).toUpperCase() + key.slice(1)}>{props.productInfo[key]}</Descriptions.Item> : null
-                    ))};
-                </Descriptions>
+            <Col span={16}>
+                <Descriptions
+                    bordered
+                    layout='horizontal'
+                    column={1}
+                    items={items}
+                />
             </Col>
         </Row>
     );
