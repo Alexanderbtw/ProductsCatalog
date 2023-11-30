@@ -66,7 +66,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpDelete]
         [Route("delete/{id?}")]
-        public IActionResult ClothDelete([FromRoute] int? id)
+        public IActionResult DeleteCloth([FromRoute] int? id)
         {
             if (!id.HasValue)
             {
@@ -80,7 +80,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpPut]
         [Route("edit")]
-        public IActionResult EditDevice(Cloth cloth)
+        public IActionResult EditCloth(Cloth cloth)
         {
             if (cloth == null)
             {
