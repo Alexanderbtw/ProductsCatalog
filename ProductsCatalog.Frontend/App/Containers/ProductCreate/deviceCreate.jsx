@@ -1,14 +1,23 @@
 ﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, InputNumber, Button } from 'antd';
+import { useSelector } from 'react-redux';
 const { TextArea } = Input;
+
+import ImageUpload from '../Shared/imageUpload.jsx';
 
 function DeviceCreate() {
     const navigate = useNavigate();
-
+    let deviceInfo;
+    let root = "create";
+    if (window.location.href.endsWith("edit")) {
+        root = "edit";
+        deviceInfo = useSelector(state => state.deviceReadReducer.deviceInfo);
+    }
+    
     function handleSubmit(device) {
-        fetch('/api/device/create/', {
-            method: 'POST',
+        fetch(`/api/device/${root}/`, {
+            method: deviceInfo ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(device)
         })
@@ -31,6 +40,10 @@ function DeviceCreate() {
             autoComplete="off"
             onFinish={ handleSubmit }
             onFinishFailed={ onSubmitFailed }
+            initialValues={{
+                ...deviceInfo
+            }}
+            requiredMark="optional"
             layout="horizontal"
             labelCol={{
                 span: 4,
@@ -39,28 +52,34 @@ function DeviceCreate() {
                 span: 14,
             }}
         >
-            <Form.Item name="Title" label="Title" rules={[{ required: true }]} hasFeedback > 
+            <Form.Item name="id" hidden={true} />
+            <Form.Item name="creationTime" hidden={true} />
+
+            <Form.Item name="title" label="Title" required hasFeedback > 
                 <Input/>
             </Form.Item>
-            <Form.Item name="Price" label="Price" rules={[{ required: true }]} hasFeedback >
+            <Form.Item name="price" label="Price" required hasFeedback >
                 <InputNumber min={0} />
             </Form.Item>
-            <Form.Item name="Cathegory" label="Cathegory" rules={[{ required: true }]} hasFeedback>
+            <Form.Item name="cathegory" label="Cathegory" required hasFeedback>
                 <Input />
             </Form.Item>
-            <Form.Item name="Description" label="Description" rules={[{ required: true }]} hasFeedback>
+            <Form.Item name="description" label="Description" required hasFeedback>
                 <TextArea rows={4} />
             </Form.Item>
-            <Form.Item name="Manufacturer" label="Manufacturer" requiredMark="optional">
+            <Form.Item name="picture" label="Picture">
+                <ImageUpload />
+            </Form.Item>
+            <Form.Item name="manufacturer" label="Manufacturer">
                 <Input />
             </Form.Item>
-            <Form.Item name="CPU" label="CPU" requiredMark="optional">
+            <Form.Item name="cpu" label="CPU">
                 <Input />
             </Form.Item>
-            <Form.Item name="GPU" label="GPU" requiredMark="optional">
+            <Form.Item name="gpu" label="GPU">
                 <Input />
             </Form.Item>
-            <Form.Item name="Camera" label="Camera" requiredMark="optional">
+            <Form.Item name="camera" label="Camera">
                 <Input />
             </Form.Item>
             <Form.Item

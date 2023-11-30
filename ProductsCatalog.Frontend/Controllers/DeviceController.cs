@@ -46,6 +46,7 @@ namespace ProductsCatalog.Frontend.Controllers
             {
                 return NotFound();
             }
+
             return new JsonResult(deviceInfo);
         }
 
@@ -55,7 +56,7 @@ namespace ProductsCatalog.Frontend.Controllers
         {
             if (device == null)
             {
-                return BadRequest();
+                return BadRequest("Device not provided");
             }
 
             device.CreationTime = DateTime.UtcNow;
@@ -77,6 +78,21 @@ namespace ProductsCatalog.Frontend.Controllers
             deviceRepo.Delete(new Device() { Id = (int)id });
             deviceRepo.Save();
             return Ok();
+        }
+
+        [HttpPut]
+        [Route("edit")]
+        public IActionResult EditDevice(Device device)
+        {
+            if (device == null)
+            {
+                return BadRequest("Device not provided");
+            }
+
+            deviceRepo.Update(device);
+            deviceRepo.Save();
+
+            return Content(device.Id.ToString());
         }
     }
 }

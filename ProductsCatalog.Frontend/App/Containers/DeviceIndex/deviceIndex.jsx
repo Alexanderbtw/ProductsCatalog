@@ -2,42 +2,57 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Spin, Divider } from 'antd';
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import { getDevices } from './deviceIndexActions.jsx';
 
 const colsInfo = [
     {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id'
-    },
-    {
-        title: 'Title',
-        key: 'title',
+        title: 'Picture',
+        key: 'picture',
+        width: '20%',
         render: (text, record) => (
-            <Link to={"/device/read/" + record.id}>{record.title}</Link>
+            <img
+                src={record.picture ? 'data:image/jpeg;base64,' + record.picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width:"200px", height:"200px", borderRadius:"25px", objectFit:"cover" }}
+            />
         )
     },
     {
-        title: 'Price',
-        dataIndex: 'price',
-        key: 'price'
-    },
-    {
-        title: 'Creation Time',
-        dataIndex: 'creationTime',
-        key: 'creationTime'
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        width: '20%'
     },
     {
         title: 'Cathegory',
         dataIndex: 'cathegory',
-        key: 'cathegory'
-    }
+        key: 'cathegory',
+        width: '10%'
+    },
+    {
+        title: 'Price',
+        dataIndex: 'price',
+        key: 'price',
+        width: '10%'
+    },
+    {
+        title: 'Description',
+        dataIndex: 'description',
+        key: 'description',
+        width: '20%'
+    },
+    {
+        title: 'Creation Time',
+        dataIndex: 'creationTime',
+        key: 'creationTime',
+        width: '20%'
+    },
 ];
 
 function DeviceIndex() {
     const [current, setCurrent] = React.useState(1);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         document.title = "Products Catalog - Devices"
@@ -76,6 +91,13 @@ function DeviceIndex() {
                 loading={isLoading}
                 pagination={{ total: totalCount, current: current }}
                 onChange={handleTableChange}
+                onRow={(record, index) => {
+                    return {
+                        onClick: (event) => {
+                            navigate("/device/read/" + record.id)
+                        }
+                    }
+                }}
             />
         </div>
     );

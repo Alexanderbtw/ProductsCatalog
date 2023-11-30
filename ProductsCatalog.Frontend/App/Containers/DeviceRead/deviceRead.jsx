@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Divider, Spin, Popconfirm, Button } from 'antd';
-import { RollbackOutlined, DeleteOutlined } from "@ant-design/icons"
+import { RollbackOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons"
 import { Link, useParams } from "react-router-dom";
 
 import { getDevice } from './deviceReadActions.jsx';
@@ -42,20 +42,34 @@ const DeviceRead = () => {
         );
     }
 
+    if (error) {
+        console.log({ error });
+        return (
+            <div>
+                Error in data loading: {error}
+            </div>
+        );
+    }
+
     return (
         <div>
             <Divider orientation={"center"}>Information about single device</Divider>
 
-            <Product productInfo={deviceInfo} />
+            <Product productInfo={ deviceInfo } />
             <div style={{ marginTop: "50px", fontWeight: "bold", display: "flex", flexDirection: "row", gap: "20px", justifyContent: "center" }}>
                 <Link to={"/device/index"}>
                     <Button type="primary">
                         <RollbackOutlined />
                     </Button>
                 </Link>
+                <Link to={"/device/edit"}>
+                    <Button type="primary">
+                        <EditOutlined />
+                    </Button>
+                </Link>
                 <Popconfirm
                     title="Sure to delete?"
-                    onConfirm={() => deleteHandler(deviceInfo.id)}
+                    onConfirm={ () => deleteHandler(deviceInfo.id) }
                 >
                     <Button type="primary">
                         <DeleteOutlined />

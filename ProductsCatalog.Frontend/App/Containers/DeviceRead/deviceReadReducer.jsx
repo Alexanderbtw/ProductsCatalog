@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     deviceInfo: {
-        id: 1, creationTime: null, title: null, price: null, description: null, manufacturer: null, cpu: null, gpu: null, camera: null
+        id: 1, creationTime: null, title: null, price: null, description: null, manufacturer: null, cpu: null, gpu: null, camera: null, picture: null
     },
     isLoading: false,
     error: null

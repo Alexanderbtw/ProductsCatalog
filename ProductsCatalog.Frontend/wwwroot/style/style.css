@@ -1,0 +1,13 @@
+﻿.ant-table-cell {
+    font-size: 16px;
+    max-width: 400px;
+    max-height: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ant-table-cell-row-hover {
+    color: #1677ff;
+    cursor: pointer;
+}

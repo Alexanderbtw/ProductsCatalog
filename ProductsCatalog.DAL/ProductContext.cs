@@ -20,6 +20,20 @@ namespace ProductsCatalog.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder
+                .Entity<Device>()
+                .Property(d => d.Picture)
+                .HasConversion(
+                    p => Convert.FromBase64String(p ?? ""),
+                    p => Convert.ToBase64String(p));
+
+            modelBuilder
+                .Entity<Cloth>()
+                .Property(c => c.Picture)
+                .HasConversion(
+                    p => Convert.FromBase64String(p ?? ""),
+                    p => Convert.ToBase64String(p));
         }
     }
 }

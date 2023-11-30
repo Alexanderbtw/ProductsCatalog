@@ -31,7 +31,6 @@ namespace ProductsCatalog.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cathegory")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Color")
@@ -45,6 +44,9 @@ namespace ProductsCatalog.DAL.Migrations
 
                     b.Property<string>("Material")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("bytea");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
@@ -75,7 +77,6 @@ namespace ProductsCatalog.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Cathegory")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreationTime")
@@ -89,6 +90,9 @@ namespace ProductsCatalog.DAL.Migrations
 
                     b.Property<string>("Manufacturer")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("bytea");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");

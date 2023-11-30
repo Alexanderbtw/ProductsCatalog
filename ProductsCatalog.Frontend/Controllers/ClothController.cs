@@ -54,7 +54,7 @@ namespace ProductsCatalog.Frontend.Controllers
         {
             if (cloth == null)
             {
-                return BadRequest();
+                return BadRequest("Cloth not provided");
             }
 
             cloth.CreationTime = DateTime.UtcNow;
@@ -76,6 +76,21 @@ namespace ProductsCatalog.Frontend.Controllers
             clothRepo.Delete(new Cloth() { Id = (int)id });
             clothRepo.Save();
             return Ok();
+        }
+
+        [HttpPut]
+        [Route("edit")]
+        public IActionResult EditDevice(Cloth cloth)
+        {
+            if (cloth == null)
+            {
+                return BadRequest("Cloth not provided");
+            }
+
+            clothRepo.Update(cloth);
+            clothRepo.Save();
+
+            return Content(cloth.Id.ToString());
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace ProductsCatalog.Business.Models
+﻿using ProductsCatalog.Frontend.JSONConverters;
+using System.Text.Json.Serialization;
+
+namespace ProductsCatalog.Business.Models
 {
     public class IdInfo
     {
@@ -8,5 +11,8 @@
         public string? Title { get; set; }
         public decimal? Price { get; set; }
         public string? Description { get; set; }
+
+        //[JsonConverter(typeof(ByteArrayConverter))]
+        public string? Picture { get; set; }
     }
 }

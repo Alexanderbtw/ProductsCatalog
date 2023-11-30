@@ -1,14 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Layout } from 'antd';
 
 import DeviceRead from './DeviceRead/deviceRead.jsx';
 import DeviceIndex from './DeviceIndex/deviceIndex.jsx'
 import ClothRead from './ClothRead/clothRead.jsx';
 import ClothIndex from './ClothIndex/clothIndex.jsx';
 import ProductCreate from './ProductCreate/productCreate.jsx';
-
-import { Layout } from 'antd';
 import Header from './Header/header.jsx';
+import DeviceCreate from './ProductCreate/deviceCreate.jsx';
+import ClothCreate from './ProductCreate/clothCreate.jsx';
+
 const { Content, Footer } = Layout
 
 export default class App extends React.Component {
@@ -29,7 +31,9 @@ export default class App extends React.Component {
                                     <Route path="/device/read/:id" element={<DeviceRead />} />
                                     <Route path="/cloth/index" element={<ClothIndex />} />
                                     <Route path="/cloth/read/:id" element={<ClothRead />} />
-                                    <Route path="/product/create" element={<ProductCreate /> } />
+                                    <Route path="/product/create" element={<ProductCreate />} />
+                                    <Route path="/device/edit" element={<DeviceCreate />} />
+                                    <Route path="/cloth/edit" element={<ClothCreate />} />
                                 </Routes>
                             </div>
                         </Content>

@@ -6,7 +6,7 @@
 
 const initialState = {
     clothInfo: {
-        id: 1, creationTime: null, title: null, price: null, description: null, material: null, size: null, color: null
+        id: 1, creationTime: null, title: null, price: null, description: null, material: null, size: null, color: null, picture: null
     },
     isLoading: false,
     error: null
