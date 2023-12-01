@@ -6,7 +6,7 @@ function Product(props) {
         let value = props.productInfo[key];
 
         if (key == "creationTime") {
-            value = new Date(value).toLocaleDateString("");
+            value = new Date(value).toLocaleString();
         }
         else if (key == "price") {
             value = "$" + value;

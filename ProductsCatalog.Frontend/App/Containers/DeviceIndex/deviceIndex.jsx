@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Spin, Divider } from 'antd';
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
 import { getDevices } from './deviceIndexActions.jsx';
@@ -10,10 +9,10 @@ const colsInfo = [
     {
         title: 'Picture',
         key: 'picture',
-        width: '20%',
+        width: '10%',
         render: (text, record) => (
             <img
-                src={record.picture ? 'data:image/jpeg;base64,' + record.picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width:"200px", height:"200px", borderRadius:"25px", objectFit:"cover" }}
+                src={record.picture ? 'data:image/jpeg;base64,' + record.picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width: "150px", height: "150px", borderRadius:"25px", objectFit:"cover" }}
             />
         )
     },
@@ -32,22 +31,25 @@ const colsInfo = [
     {
         title: 'Price',
         key: 'price',
-        width: '10%',
+        width: '15%',
         render: (text, record) => (
             <>{"$" + record.price}</>
         )
+        
     },
     {
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
-        width: '20%'
+        width: '25%'
     },
     {
-        title: 'Creation Time',
-        dataIndex: 'creationTime',
+        title: 'Creation Date',
         key: 'creationTime',
-        width: '20%'
+        width: '20%',
+        render: (text, record) => (
+            <>{new Date(record.creationTime).toLocaleDateString()}</>
+        )
     },
 ];
 

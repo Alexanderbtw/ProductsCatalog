@@ -20,7 +20,6 @@ namespace ProductsCatalog.Frontend
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseWebpackDevMiddleware();
                 app.UseHsts();
             }
 
