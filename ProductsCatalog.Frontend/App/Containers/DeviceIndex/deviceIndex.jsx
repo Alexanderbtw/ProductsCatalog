@@ -57,7 +57,6 @@ function DeviceIndex() {
     const [current, setCurrent] = React.useState(1);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     React.useEffect(() => {
         document.title = "Products Catalog - Devices"
         dispatch(getDevices(new Object));

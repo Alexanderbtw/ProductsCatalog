@@ -28,7 +28,7 @@ function Product(props) {
                     fallback='/images/image_error_full.png'
                     src={'data:image/jpeg;base64,' + props.productInfo.picture}
                     alt="Not Found"
-                    style={{ borderRadius: "8px" }}
+                    style={{ borderRadius: "8px", height: "500px", objectFit: "cover" }}
                 />
             </Col>
             <Col span={16}>

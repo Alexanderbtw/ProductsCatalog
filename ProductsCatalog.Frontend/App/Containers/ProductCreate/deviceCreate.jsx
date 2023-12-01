@@ -96,7 +96,7 @@ function DeviceCreate() {
                 }}
             >
                 <Button type="primary" htmlType="submit">
-                    Create
+                    {root == 'create' ? 'Create' : 'Edit'} 
                 </Button>
             </Form.Item>
         </Form>

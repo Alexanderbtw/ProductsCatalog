@@ -11,12 +11,3 @@
     color: #1677ff;
     cursor: pointer;
 }
-
-.ant-menu {
-    height: 100% !important;
-}
-
-    .ant-menu > li:last-child {
-        position: absolute !important;
-        bottom: 0px;
-    }
