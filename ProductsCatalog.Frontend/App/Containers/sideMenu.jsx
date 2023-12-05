@@ -1,13 +1,15 @@
 ﻿import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Layout } from 'antd';
-import { UserOutlined, LoginOutlined, UserAddOutlined, LogoutOutlined } from "@ant-design/icons";
+import { UserOutlined, LoginOutlined, UserAddOutlined, LogoutOutlined, HomeOutlined } from "@ant-design/icons";
+
+import SessionManager from './Auth/sessionManager.js';
 
 const { Sider } = Layout;
 
 const defaultItems = [
     {
-        key: "auth",
+        key: "notauth",
         label: <UserOutlined />,
         children: [
             {
@@ -17,18 +19,27 @@ const defaultItems = [
             {
                 key: "/register",
                 label: <Link to={"/register"}><UserAddOutlined /> Register</Link>
-            },
-            {
-                key: "/logout",
-                label: <Link to={"/logout"}><LogoutOutlined /> Logout</Link>,
-                danger: true
             }
         ]
     }
 ]
 
 const userItems = [
-    ...defaultItems,
+    {
+        key: "isauth",
+        label: <UserOutlined />,
+        children: [
+            {
+                key: "/home",
+                label: <Link to={"/home"}><HomeOutlined /> Home</Link>
+            },
+            {
+                key: "/logout",
+                label: <><LogoutOutlined /> Logout</>,
+                danger: true
+            }
+        ]
+    },
     {
         key: "/device/index",
         label: <Link to={"/device/index"}>Devices</Link>
@@ -47,25 +58,35 @@ const adminItems = [
     }
 ]
 
-function SideMenu({ roles }) {
+function SideMenu() {
     const [selectedKey, setKey] = React.useState(window.location.pathname);
     const [items, setItems] = React.useState(defaultItems);
     const location = useLocation();
+    const navigate = useNavigate();
+
+    function handleClick({ key }) {
+        if (key == "/logout") {
+            SessionManager.removeUserSession();
+            navigate("/");
+        }
+    }
 
     React.useEffect(() => {
         setKey(location.pathname);
     }, [location]);
 
     React.useEffect(() => {
+        const { roles } = SessionManager.getUserSession();
         if (roles) {
             if (roles.includes("Admin")) {
                 setItems(adminItems);
             } else {
                 setItems(userItems);
             }
+        } else {
+            setItems(defaultItems);
         }
-    }, [roles]);
-    
+    }, [SessionManager.isAuth()]);
 
     return (
         <Sider>
@@ -76,6 +97,7 @@ function SideMenu({ roles }) {
                 theme="dark"
                 mode="vertical"
                 items={items}
+                onClick={handleClick}
             />
         </Sider>
     );

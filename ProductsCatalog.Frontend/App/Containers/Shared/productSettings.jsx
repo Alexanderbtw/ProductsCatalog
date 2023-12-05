@@ -3,8 +3,12 @@ import { Divider, Popconfirm, Button } from 'antd';
 import { Link } from "react-router-dom";
 import { RollbackOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
+import SessionManager from '../Auth/sessionManager';
+
 function ProductSettings(props) {
     const root = props.productCathegory;
+
+    const { roles } = SessionManager.getUserSession();
 
     return (
         <>
@@ -16,19 +20,23 @@ function ProductSettings(props) {
                         <RollbackOutlined />
                     </Button>
                 </Link>
-                <Link to={`/${root}/edit`}>
-                    <Button type="primary">
-                        <EditOutlined />
-                    </Button>
-                </Link>
-                <Popconfirm
-                    title="Sure to delete?"
-                    onConfirm={() => props.deleteHandler(props.productInfo.id)}
-                >
-                    <Button type="primary">
-                        <DeleteOutlined />
-                    </Button>
-                </Popconfirm>
+                {roles.includes("Admin") ? 
+                    <>
+                        <Link to={`/${root}/edit`}>
+                            <Button type="primary">
+                                <EditOutlined />
+                            </Button>
+                        </Link>
+                        <Popconfirm
+                            title="Sure to delete?"
+                            onConfirm={() => props.deleteHandler(props.productInfo.id)}
+                        >
+                            <Button type="primary">
+                                <DeleteOutlined />
+                            </Button>
+                        </Popconfirm> 
+                    </>
+                : null}
             </div>
         </>
     );

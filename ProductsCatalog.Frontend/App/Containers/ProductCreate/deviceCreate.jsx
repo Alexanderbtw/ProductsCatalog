@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 const { TextArea } = Input;
 
 import ImageUpload from '../Shared/imageUpload.jsx';
+import SessionManager from '../Auth/sessionManager.js';
 
 function DeviceCreate() {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ function DeviceCreate() {
             method: deviceInfo ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+                Authorization: 'Bearer ' + SessionManager.getToken()
             },
             body: JSON.stringify(device)
         })

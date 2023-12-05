@@ -28,7 +28,6 @@ const ClothRead = () => {
     }
 
     React.useEffect(() => {
-        document.title = "Products Catalog - Cloth #" + id;
         dispatch(getCloth(id));
     }, []);
 

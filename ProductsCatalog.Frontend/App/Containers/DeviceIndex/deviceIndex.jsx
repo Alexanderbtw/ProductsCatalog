@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Spin, Divider } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { getDevices } from './deviceIndexActions.jsx';
 
@@ -58,7 +59,6 @@ function DeviceIndex() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     React.useEffect(() => {
-        document.title = "Products Catalog - Devices"
         dispatch(getDevices(new Object));
     }, []);
 
@@ -87,6 +87,10 @@ function DeviceIndex() {
 
     return (
         <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <Helmet>
+                <title>Products Catalog - Home</title>
+            </Helmet>
+
             <Divider orientation={"center"}>Devices List</Divider>
             <Table
                 dataSource={devicesInfo}

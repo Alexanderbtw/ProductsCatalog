@@ -1,46 +1,59 @@
 ﻿import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Divider } from 'antd';
+import { Form, Input, Button, Divider, Spin } from 'antd';
+import { Helmet } from 'react-helmet';
+
+import SessionManager from './sessionManager';
+import { CreateUser } from "./accessAPI.js";
 
 function Register() {
     const navigate = useNavigate();
+    const [isLoading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState([]);
 
     React.useEffect(() => {
-        document.title = "Products Catalog - Register";
-    }, []);
+        if (SessionManager.isAuth()) {
+            navigate("/home");
+        }
+    }, [])
 
-    function handleSubmit(newUser) {
-        fetch("https://localhost:7142/api/User/Create", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                ...newUser,
-                roles: ["User"]
-            })
-        })
-            .then(result => {
-                if (result.ok) {
-                    navigate("/");
-                }
-            })
-            .catch((error) => {
-                console.log({ error });
-            });
+    async function handleSubmit(newUser) {
+        setLoading(true);
+
+        const ans = await CreateUser(newUser)
+        if (ans) {
+            navigate("/");
+        } else {
+            console.log({ ans });
+            setError(["Email is already in use"]);
+        }
+        setLoading(false);
     }
 
     function onSubmitFailed(error) {
         console.error({ error });
     }
 
+    if (isLoading) {
+        return (
+            <div style={{ textAlign: "center", marginTop: "200px" }}>
+                <Spin size="large" />
+            </div>
+        );
+    }
+
     return (
         <>
+            <Helmet>
+                <title>Products Catalog - Home</title>
+            </Helmet>
+
             <Divider orientation={"center"}>Registration</Divider>
             <Form
                 onFinish={handleSubmit}
                 onFinishFailed={onSubmitFailed}
-                autoComplete="off"
                 requiredMark="optional"
-                labelWrap
+                autoComplete="off"
                 labelCol={{
                     span: 6,
                 }}
@@ -91,6 +104,18 @@ function Register() {
                             required: true,
                             message: 'Please input your password!',
                         },
+                        () => ({
+                            validator(_, value) {
+                                let pattern = new RegExp(
+                                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[-+_!@#$%^&*.,?]).+$"
+                                ); 
+
+                                if (value && pattern.test(value)) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Password must contains Uppercase, Lowercase, Special Characters and Numeric Values'));
+                            },
+                        }),
                     ]}
                     hasFeedback
                 >
@@ -132,6 +157,10 @@ function Register() {
                     >
                         Register
                     </Button>
+                    <Form.ErrorList
+                        style={{ color: "red" }}
+                        errors={error}
+                    />
                 </Form.Item>
             </Form>
         </>

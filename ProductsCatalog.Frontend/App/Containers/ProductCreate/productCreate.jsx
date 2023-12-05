@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Divider, Spin, Radio } from 'antd';
+import { Helmet } from 'react-helmet';
 
 import DeviceCreate from './deviceCreate.jsx';
 import ClothCreate from './clothCreate.jsx';
@@ -24,6 +25,10 @@ function ProductCreate() {
 
     return (
         <>
+            <Helmet>
+                <title>Products Catalog - Create</title>
+            </Helmet>
+
             <Divider>
                 <Radio.Group value={selectedProduct} onChange={handleChange}>
                     <Radio.Button value="Device">Device</Radio.Button>

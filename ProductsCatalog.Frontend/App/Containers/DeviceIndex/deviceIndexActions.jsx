@@ -1,4 +1,5 @@
-﻿import {
+﻿import SessionManager from '../Auth/sessionManager.js';
+import {
     GET_DEVICES_LOADING_IN_PROGRESS,
     GET_DEVICES_SUCCESS,
     GET_DEVICES_ERROR,
@@ -39,7 +40,7 @@ export function getDevices(pagination) {
 
         fetch(HREF_DeviceController_GetAll + queryTrailer, {
             headers: {
-                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+                Authorization: 'Bearer ' + SessionManager.getToken()
             }
         })
             .then((response) => {

@@ -12,8 +12,8 @@ import ClothCreate from './ProductCreate/clothCreate.jsx';
 import SideMenu from './sideMenu.jsx';
 import Login from './Auth/login.jsx';
 import Register from './Auth/register.jsx';
-import Logout from './Auth/logout.jsx';
 import Home from './home.jsx';
+import Header from './header.jsx';
 
 const { Content, Footer } = Layout
 
@@ -23,18 +23,17 @@ function App() {
     return (
         <Router>
             <Layout style={{ minHeight: '100vh' }}>
-                <SideMenu roles={ userRoles } />
+                <SideMenu />
                 <Layout className="site-layout">
                     <Content style={{ margin: "0 16px" }}>
                         <div style={{ marginTop: "35px" }}>
-                            <h2 style={{ marginTop: "30px", textAlign: "center" }}>{document.title}</h2>
+                            <Header />
                             <hr></hr>
 
                             <Routes>
                                 <Route index path="/" element={<Login />} />
-                                <Route path="/home" element={<Home roles={ userRoles } setRoles={ setRoles } />} />
+                                <Route path="/home" element={<Home />} />
                                 <Route path="/register" element={<Register />} />
-                                <Route path="/logout" element={<Logout setRoles={ setRoles } />} />
                                 <Route path="/device/index" element={<DeviceIndex />} />
                                 <Route path="/device/read/:id" element={<DeviceRead />} />
                                 <Route path="/cloth/index" element={<ClothIndex />} />

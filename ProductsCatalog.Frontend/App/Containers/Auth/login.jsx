@@ -1,56 +1,59 @@
 ﻿import React from 'react';
-import { Form, Input, Button, Divider } from 'antd';
+import { Form, Input, Button, Divider, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+
+import SessionManager from "./sessionManager.js";
+import { PostLogin } from "./accessAPI.js";
 
 function Login() {
     const navigate = useNavigate();
-
-    fetch("/IsAuth", {
-        headers: {
-            Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
-        },
-    })
-        .then(result => {
-            if (result.ok) {
-                navigate("/home");
-            }
-        })
-        .catch(error => {
-            console.log({ error })
-        });
+    const [isLoading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState([]);
 
     React.useEffect(() => {
-        document.title = "Products Catalog - Login";
-    }, []);
+        if (SessionManager.isAuth()) {
+            navigate("/home");
+        }
+    }, [])
 
-    function handleSubmit(user) {
-        fetch("https://localhost:7142/api/Auth/Login", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(user)
-        })
-            .then(result => result.json())
-            .then((result) => {
-                sessionStorage.setItem("JWT", result.token);
-                navigate("/home");
-            })
-            .catch((error) => {
-                console.log({ error });
-            });
+    async function handleSubmit(user) {
+        setLoading(true);
+
+        const ans = await PostLogin(user)
+        if (ans?.token) {
+            navigate("/home");
+        } else {
+            console.log({ ans });
+            setError(["Unknown Username or Password"]);
+        }
+        setLoading(false);
     }
 
     function onSubmitFailed(error) {
         console.log(error);
     }
 
+    if (isLoading) {
+        return (
+            <div style={{ textAlign: "center", marginTop: "200px" }}>
+                <Spin size="large" />
+            </div>
+        );
+    }
+
     return (
         <>
+            <Helmet>
+                <title>Products Catalog - Login</title>
+            </Helmet>
+
             <Divider orientation={"center"}>Login</Divider>
             <Form
                 onFinish={handleSubmit}
                 onFinishFailed={onSubmitFailed}
-                autoComplete="off"
                 requiredMark="optional"
+                autoComplete="off"
                 labelCol={{
                     span: 4,
                 }}
@@ -101,6 +104,10 @@ function Login() {
                     >
                         Login
                     </Button>
+                    <Form.ErrorList
+                        style={{ color: "red" }}
+                        errors={error}
+                    />
                 </Form.Item>
             </Form>
         </>

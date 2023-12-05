@@ -58,7 +58,6 @@ function ClothIndex() {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        document.title = "Products Catalog - Clothes"
         dispatch(getClothes(new Object));
     }, []);
 
