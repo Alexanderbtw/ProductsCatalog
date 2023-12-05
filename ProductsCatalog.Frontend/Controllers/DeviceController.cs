@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Repositories;
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -9,6 +12,7 @@ namespace ProductsCatalog.Frontend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DeviceController : Controller
     {
         private readonly EFRepository<Device, ProductContext> deviceRepo;
@@ -52,6 +56,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateDevice(Device device)
         {
             if (device == null)
@@ -68,6 +73,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpDelete]
         [Route("delete/{id?}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteDevice([FromRoute] int? id)
         {
             if (!id.HasValue)
@@ -82,6 +88,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpPut]
         [Route("edit")]
+        [Authorize(Roles = "Admin")]
         public IActionResult EditDevice(Device device)
         {
             if (device == null)

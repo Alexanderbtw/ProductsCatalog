@@ -18,7 +18,10 @@ function DeviceCreate() {
     function handleSubmit(device) {
         fetch(`/api/device/${root}/`, {
             method: deviceInfo ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+            },
             body: JSON.stringify(device)
         })
             .then(result => result.text())

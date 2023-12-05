@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Repositories;

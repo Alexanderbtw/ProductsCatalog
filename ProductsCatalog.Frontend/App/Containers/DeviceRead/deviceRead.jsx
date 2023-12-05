@@ -15,6 +15,9 @@ const DeviceRead = () => {
 
     function deleteHandler(id) {
         fetch('/api/device/delete/' + id, {
+            headers: {
+                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+            },
             method: 'DELETE',
         })
             .then(res => res.text())

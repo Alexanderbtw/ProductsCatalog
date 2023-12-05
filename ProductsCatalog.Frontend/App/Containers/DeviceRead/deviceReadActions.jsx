@@ -31,7 +31,11 @@ export function getDevice(id) {
     return (dispatch) => {
         dispatch(startReceiving());
 
-        fetch(HREF_DeviceController_GetSingle + id)
+        fetch(HREF_DeviceController_GetSingle + id, {
+            headers: {
+                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+            }
+        })
             .then((response) => {
                 var parsedJson = response.json();
                 return parsedJson;

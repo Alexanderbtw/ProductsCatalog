@@ -37,7 +37,11 @@ export function getDevices(pagination) {
 
         dispatch(startReceiving());
 
-        fetch(HREF_DeviceController_GetAll + queryTrailer)
+        fetch(HREF_DeviceController_GetAll + queryTrailer, {
+            headers: {
+                Authorization: 'Bearer ' + sessionStorage.getItem("JWT")
+            }
+        })
             .then((response) => {
                 var parsedJson = response.json();
                 return parsedJson;
