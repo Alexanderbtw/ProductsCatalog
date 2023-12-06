@@ -22,7 +22,7 @@ function ProductSettings(props) {
                 </Link>
                 {roles.includes("Admin") ? 
                     <>
-                        <Link to={`/${root}/edit`}>
+                        <Link to={`/product/edit/${root}`}>
                             <Button type="primary">
                                 <EditOutlined />
                             </Button>

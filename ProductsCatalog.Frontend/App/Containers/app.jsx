@@ -4,9 +4,8 @@ import { Layout } from 'antd';
 
 import ProductIndex from './ProductIndex/productIndex.jsx';
 import ProductRead from './ProductRead/productRead.jsx';
-import ProductCreate from './ProductCreate/productCreate.jsx';
-import DeviceCreate from './ProductCreate/deviceCreate.jsx';
-import ClothCreate from './ProductCreate/clothCreate.jsx';
+import ProductCreate from './ProductInteract/productCreate.jsx';
+import ProductEdit from './ProductInteract/productEdit.jsx';
 
 import SideMenu from './sideMenu.jsx';
 import Login from './Auth/login.jsx';
@@ -38,8 +37,7 @@ function App() {
                                 <Route path="/cloth/read/:id" element={<ProductRead productType="Cloth" />} />
 
                                 <Route path="/product/create" element={<ProductCreate />} />
-                                <Route path="/device/edit" element={<DeviceCreate />} />
-                                <Route path="/cloth/edit" element={<ClothCreate />} />
+                                <Route path="/product/edit/:selectedType" element={<ProductEdit />} />
                             </Routes>
                         </div>
 

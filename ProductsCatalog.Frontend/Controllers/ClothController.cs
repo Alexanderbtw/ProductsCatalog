@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
@@ -8,6 +9,7 @@ namespace ProductsCatalog.Frontend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClothController : Controller
     {
         private readonly EFRepository<Cloth, ProductContext> clothRepo;
@@ -51,6 +53,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpPost]
         [Route("create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateCloth(Cloth cloth)
         {
             if (cloth == null)
@@ -67,6 +70,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpDelete]
         [Route("delete/{id?}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteCloth([FromRoute] int? id)
         {
             if (!id.HasValue)
@@ -81,6 +85,7 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpPut]
         [Route("edit")]
+        [Authorize(Roles = "Admin")]
         public IActionResult EditCloth(Cloth cloth)
         {
             if (cloth == null)
