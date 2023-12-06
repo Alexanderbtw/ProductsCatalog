@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 import { Form, Input, InputNumber, Button } from 'antd';
 const { TextArea } = Input;
 
-import DeviceFormItems from './deviceFormItems.jsx';
-import ClothFormItems from './clothFormItems.jsx';
+import DeviceFormItems from './FormItems/deviceFormItems.jsx';
+import ClothFormItems from './FormItems/clothFormItems.jsx';
 import ImageUpload from '../Shared/imageUpload.jsx';
 import SessionManager from '../Auth/sessionManager.js';
 
