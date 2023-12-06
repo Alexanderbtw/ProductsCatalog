@@ -23,12 +23,12 @@ namespace ProductsCatalog.Frontend.Controllers
         {
             int totalCount = clothRepo.GetAll().Count();
 
-            List<Cloth> clothesInfo = clothRepo.GetAllWithoutTracking()
+            List<Cloth> productsInfo = clothRepo.GetAllWithoutTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            return new JsonResult(new { clothesInfo, totalCount });
+            return new JsonResult(new { productsInfo, totalCount });
         }
 
         [HttpGet]

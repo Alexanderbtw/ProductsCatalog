@@ -41,12 +41,12 @@ const userItems = [
         ]
     },
     {
-        key: "/device/index",
-        label: <Link to={"/device/index"}>Devices</Link>
+        key: "/Device/index",
+        label: <Link to={"/Device/index"}>Devices</Link>
     },
     {
-        key: "/cloth/index",
-        label: <Link to={"/cloth/index"}>Clothes</Link>
+        key: "/Cloth/index",
+        label: <Link to={"/Cloth/index"}>Clothes</Link>
     }
 ]
 

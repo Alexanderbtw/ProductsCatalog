@@ -8,16 +8,16 @@ import ImageUpload from '../Shared/imageUpload.jsx';
 
 function ClothCreate() {
     const navigate = useNavigate();
-    let clothInfo;
+    let productInfo;
     let root = "create";
     if (window.location.href.endsWith("edit")) {
         root = "edit";
-        clothInfo = useSelector(state => state.clothReadReducer.clothInfo);
+        productInfo = useSelector(state => state.productReadReducer.productInfo);
     }
 
     function handleSubmit(cloth) {
         fetch(`/api/cloth/${root}/`, {
-            method: clothInfo ? 'PUT' : 'POST',
+            method: productInfo ? 'PUT' : 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(cloth)
         })
@@ -41,7 +41,7 @@ function ClothCreate() {
             onFinish={ handleSubmit }
             onFinishFailed={ onSubmitFailed }
             initialValues={{
-                ...clothInfo
+                ...productInfo
             }}
             requiredMark="optional"
             layout="horizontal"

@@ -9,16 +9,16 @@ import SessionManager from '../Auth/sessionManager.js';
 
 function DeviceCreate() {
     const navigate = useNavigate();
-    let deviceInfo;
+    let productInfo;
     let root = "create";
     if (window.location.href.endsWith("edit")) {
         root = "edit";
-        deviceInfo = useSelector(state => state.deviceReadReducer.deviceInfo);
+        productInfo = useSelector(state => state.productReadReducer.productInfo);
     }
     
     function handleSubmit(device) {
         fetch(`/api/device/${root}/`, {
-            method: deviceInfo ? 'PUT' : 'POST',
+            method: productInfo ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + SessionManager.getToken()
@@ -45,7 +45,7 @@ function DeviceCreate() {
             onFinish={ handleSubmit }
             onFinishFailed={ onSubmitFailed }
             initialValues={{
-                ...deviceInfo
+                ...productInfo
             }}
             requiredMark="optional"
             layout="horizontal"

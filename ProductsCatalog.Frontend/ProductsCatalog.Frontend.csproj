@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="App\Containers\SideMenu\" />
     <Folder Include="wwwroot\assets\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

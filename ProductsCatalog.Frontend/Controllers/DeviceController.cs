@@ -28,12 +28,12 @@ namespace ProductsCatalog.Frontend.Controllers
         {
             int totalCount = deviceRepo.GetAll().Count();
 
-            List<Device> devicesInfo = deviceRepo.GetAllWithoutTracking()
+            List<Device> productsInfo = deviceRepo.GetAllWithoutTracking()
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            return new JsonResult( new { devicesInfo, totalCount });
+            return new JsonResult( new { productsInfo, totalCount });
         }
 
         [HttpGet]

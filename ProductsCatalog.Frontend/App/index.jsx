@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { render } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import App from './Containers/app.jsx';
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
@@ -8,16 +7,12 @@ import thunk from 'redux-thunk';
 
 import "antd/dist/reset.css";
 
-import deviceReadReducer from './Containers/DeviceRead/deviceReadReducer.jsx';
-import deviceIndexReducer from './Containers/DeviceIndex/deviceIndexReducer.jsx';
-import clothReadReducer from './Containers/ClothRead/clothReadReducer.jsx';
-import clothIndexReducer from './Containers/ClothIndex/clothIndexReducer.jsx';
+import productReadReducer from './Containers/ProductRead/productReadReducer.jsx';
+import productIndexReducer from './Containers/ProductIndex/productIndexReducer.jsx'
 
 const rootReducer = combineReducers({
-    deviceReadReducer,
-    deviceIndexReducer,
-    clothReadReducer,
-    clothIndexReducer
+    productReadReducer,
+    productIndexReducer
 });
 
 const store = configureStore({
