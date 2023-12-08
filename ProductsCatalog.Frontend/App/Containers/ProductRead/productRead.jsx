@@ -51,8 +51,8 @@ function ProductRead(props) {
             <Product productInfo={productInfo} />
             <ProductSettings
                 deleteHandler={deleteHandler}
-                productInfo={productInfo}
-                productCathegory={props.productType}
+                productId={productInfo.id}
+                productType={props.productType}
             />
         </div>
     );

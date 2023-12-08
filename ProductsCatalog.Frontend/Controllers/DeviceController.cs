@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Repositories;
-using System.Diagnostics;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ProductsCatalog.Frontend.Controllers
 {
@@ -24,16 +21,19 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
-            int totalCount = deviceRepo.GetAll().Count();
+            search = search.ToLower();
 
-            List<Device> productsInfo = deviceRepo.GetAllWithoutTracking()
+            var request = deviceRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search) || p.Cathegory.ToLower().Contains(search));
+            int totalCount = request.Count();
+
+            List<Device> productsInfo = request
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            return new JsonResult( new { productsInfo, totalCount });
+            return new JsonResult(new { productsInfo, totalCount });
         }
 
         [HttpGet]

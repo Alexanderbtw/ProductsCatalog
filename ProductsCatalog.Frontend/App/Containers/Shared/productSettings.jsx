@@ -6,7 +6,7 @@ import { RollbackOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icon
 import SessionManager from '../Auth/sessionManager';
 
 function ProductSettings(props) {
-    const root = props.productCathegory;
+    const root = props.productType;
 
     const { roles } = SessionManager.getUserSession();
 
@@ -29,7 +29,7 @@ function ProductSettings(props) {
                         </Link>
                         <Popconfirm
                             title="Sure to delete?"
-                            onConfirm={() => props.deleteHandler(props.productInfo.id)}
+                            onConfirm={() => props.deleteHandler(props.productId)}
                         >
                             <Button type="primary">
                                 <DeleteOutlined />

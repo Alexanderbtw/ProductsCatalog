@@ -31,6 +31,7 @@ namespace ProductsCatalog.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cathegory")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Color")
@@ -40,6 +41,7 @@ namespace ProductsCatalog.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Material")
@@ -48,13 +50,14 @@ namespace ProductsCatalog.DAL.Migrations
                     b.Property<byte[]>("Picture")
                         .HasColumnType("bytea");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Size")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -77,12 +80,14 @@ namespace ProductsCatalog.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Cathegory")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GPU")
@@ -94,10 +99,11 @@ namespace ProductsCatalog.DAL.Migrations
                     b.Property<byte[]>("Picture")
                         .HasColumnType("bytea");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");

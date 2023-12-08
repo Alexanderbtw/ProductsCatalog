@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Spin, Divider } from 'antd';
+import { Table, Spin, Divider, Input } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
@@ -56,30 +56,32 @@ const colsInfo = [
 
 function ProductIndex(props) {
     const [current, setCurrent] = React.useState(1);
+    const [searchValue, setSearch] = React.useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     let location = useLocation();
 
     React.useEffect(() => {
         dispatch(getProducts(new Object, props.productsType));
+    }, []);
+
+    React.useEffect(() => {
+        dispatch(getProducts(new Object, props.productsType));
     }, [location]);
 
     function handleTableChange(pagination, filters, sorter) {
-        dispatch(getProducts(pagination, props.productsType));
-
+        dispatch(getProducts(pagination, props.productsType, searchValue));
         setCurrent(pagination.current);
+    }
+
+    function onSearch(value) {
+        dispatch(getProducts(new Object, props.productsType, value));
+        setSearch(value);
+        setCurrent(1);
     }
 
     let productsInfo = useSelector(state => state.productIndexReducer.productsInfo).map(item => ({ ...item, key: item.id }));
     let { isLoading, error, totalCount } = useSelector(state => state.productIndexReducer);
-
-    if (isLoading) {
-        return (
-            <div style={{ textAlign: "center", marginTop: "200px" }}>
-                <Spin size="large" />
-            </div>
-        );
-    }
 
     if (error) {
         return (
@@ -92,6 +94,13 @@ function ProductIndex(props) {
             <Helmet>
                 <title>Products Catalog - {props.productsType}</title>
             </Helmet>
+
+            <Input.Search
+                placeholder="Search..."
+                onSearch={onSearch}
+                enterButton
+                loading={isLoading}
+            />
 
             <Divider orientation={"center"}>{props.productsType}s List</Divider>
             <Table

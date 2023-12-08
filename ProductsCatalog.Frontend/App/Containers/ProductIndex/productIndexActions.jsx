@@ -29,12 +29,12 @@ export function errorReceiveProducts(err) {
     };
 }
 
-export function getProducts(pagination, productsType) {
+export function getProducts(pagination, productsType, searchValue = "") {
     let page = !pagination.current ? 1 : pagination.current;
     let pageSize = !pagination.pageSize ? 10 : pagination.pageSize;
 
     return (dispatch) => {
-        let queryTrailer = '?page=' + page + '&pageSize=' + pageSize;
+        let queryTrailer = '?page=' + page + '&pageSize=' + pageSize + '&search=' + searchValue;
 
         dispatch(startReceiving());
 

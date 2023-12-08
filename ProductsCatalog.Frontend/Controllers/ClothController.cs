@@ -21,11 +21,14 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
-            int totalCount = clothRepo.GetAll().Count();
+            search = search.ToLower();
 
-            List<Cloth> productsInfo = clothRepo.GetAllWithoutTracking()
+            var request = clothRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search) || p.Cathegory.ToLower().Contains(search));
+            int totalCount = request.Count();
+
+            List<Cloth> productsInfo = request
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
