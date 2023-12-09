@@ -8,5 +8,6 @@ namespace ProductsCatalog.Business.Models
         public string? CPU { get; set; }
         public string? GPU { get; set; }
         public string? Camera { get; set; }
+        public string? ScreenType { get; set; }
     }
 }

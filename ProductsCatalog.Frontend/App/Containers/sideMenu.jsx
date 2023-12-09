@@ -47,7 +47,15 @@ const userItems = [
     {
         key: "/Cloth/index",
         label: <Link to={"/Cloth/index"}>Clothes</Link>
-    }
+    },
+    {
+        key: "/Book/index",
+        label: <Link to={"/Book/index"}>Books</Link>
+    },
+    {
+        key: "/Furniture/index",
+        label: <Link to={"/Furniture/index"}>Furniture</Link>
+    },
 ]
 
 const adminItems = [

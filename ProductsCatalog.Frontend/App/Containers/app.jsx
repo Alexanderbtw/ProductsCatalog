@@ -35,6 +35,10 @@ function App() {
                                 <Route path="/device/read/:id" element={<ProductRead productType="Device" />} />
                                 <Route path="/cloth/index" element={<ProductIndex productsType="Cloth" />} />
                                 <Route path="/cloth/read/:id" element={<ProductRead productType="Cloth" />} />
+                                <Route path="/book/index" element={<ProductIndex productsType="Book" />} />
+                                <Route path="/book/read/:id" element={<ProductRead productType="Book" />} />
+                                <Route path="/furniture/index" element={<ProductIndex productsType="Furniture" />} />
+                                <Route path="/furniture/read/:id" element={<ProductRead productType="Furniture" />} />
 
                                 <Route path="/product/create" element={<ProductCreate />} />
                                 <Route path="/product/edit/:selectedType" element={<ProductEdit />} />

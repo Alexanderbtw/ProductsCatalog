@@ -5,11 +5,7 @@ import {
 } from './productIndexConstants.jsx'
 
 const initialState = {
-    productsInfo: [{
-        id: 1, creationTime: null, title: null, price: null, description: null, picture: null,
-        manufacturer: null, cpu: null, gpu: null, camera: null, 
-        material: null, size: null, color: null
-    }],
+    productsInfo: [],
     isLoading: false,
     totalCount: null,
     error: null

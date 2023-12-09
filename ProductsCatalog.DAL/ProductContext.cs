@@ -6,14 +6,15 @@ namespace ProductsCatalog.DAL
     public class ProductContext : DbContext
     {
         public DbSet<Device> Devices { get; set; }
-
         public DbSet<Cloth> Clothes { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Furniture> Furnitures { get; set; }
 
-        public ProductContext() { }
+        public ProductContext() : base() { }
 
         public ProductContext(DbContextOptions options) : base(options)
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
             //Database.Migrate();
         }
 

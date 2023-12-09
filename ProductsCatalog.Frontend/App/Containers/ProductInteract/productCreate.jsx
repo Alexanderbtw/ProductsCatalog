@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { Form, Input, InputNumber, Button } from 'antd';
 const { TextArea } = Input;
 
-import DeviceFormItems from './FormItems/deviceFormItems.jsx';
-import ClothFormItems from './FormItems/clothFormItems.jsx';
 import ImageUpload from '../Shared/imageUpload.jsx';
 import SessionManager from '../Auth/sessionManager.js';
+import DeviceFormItems from './FormItems/deviceFormItems.jsx';
+import ClothFormItems from './FormItems/clothFormItems.jsx';
+import BookFormItems from './FormItems/bookFormItems.jsx';
+import FurnitureFormItems from './FormItems/furnitureFormItems.jsx';
 
 function ProductCreate() {
     const navigate = useNavigate();
@@ -56,6 +58,14 @@ function ProductCreate() {
         items = (
             <ClothFormItems />
         );
+    } else if (selectedType == 'Book') {
+        items = (
+            <BookFormItems />
+        );
+    } else if (selectedType == 'Furniture') {
+        items = (
+            <FurnitureFormItems />
+        );
     }
 
     if (isLoading) {
@@ -84,6 +94,8 @@ function ProductCreate() {
                 <Radio.Group value={selectedType} onChange={handleChange}>
                     <Radio.Button value="Device">Device</Radio.Button>
                     <Radio.Button value="Cloth">Cloth</Radio.Button>
+                    <Radio.Button value="Book">Book</Radio.Button>
+                    <Radio.Button value="Furniture">Furniture</Radio.Button>
                 </Radio.Group>
             </Divider>
 

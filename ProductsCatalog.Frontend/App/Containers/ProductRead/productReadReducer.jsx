@@ -6,9 +6,7 @@ import {
 
 const initialState = {
     productInfo: {
-        id: 1, creationTime: null, title: null, price: null, description: null, picture: null,
-        manufacturer: null, cpu: null, gpu: null, camera: null,
-        material: null, size: null, color: null
+        id: 1
     },
     isLoading: false,
     error: null
