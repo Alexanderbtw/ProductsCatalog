@@ -13,6 +13,9 @@ namespace ProductsCatalog.Frontend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+
             builder.Services.AddControllersWithViews();
 
             var _key = builder.Configuration["Jwt:Key"];

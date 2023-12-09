@@ -13,7 +13,7 @@ function Register() {
 
     React.useEffect(() => {
         if (SessionManager.isAuth()) {
-            navigate("/home");
+            navigate("/Home");
         }
     }, [])
 

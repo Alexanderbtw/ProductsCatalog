@@ -17,8 +17,8 @@ const defaultItems = [
                 label: <Link to={"/"}><LoginOutlined /> Login</Link>
             },
             {
-                key: "/register",
-                label: <Link to={"/register"}><UserAddOutlined /> Register</Link>
+                key: "/Register",
+                label: <Link to={"/Register"}><UserAddOutlined /> Register</Link>
             }
         ]
     }
@@ -31,7 +31,7 @@ const userItems = [
         children: [
             {
                 key: "/home",
-                label: <Link to={"/home"}><HomeOutlined /> Home</Link>
+                label: <Link to={"/Home"}><HomeOutlined /> Home</Link>
             },
             {
                 key: "/logout",
@@ -41,19 +41,19 @@ const userItems = [
         ]
     },
     {
-        key: "/Device/index",
+        key: "/device/index",
         label: <Link to={"/Device/index"}>Devices</Link>
     },
     {
-        key: "/Cloth/index",
+        key: "/cloth/index",
         label: <Link to={"/Cloth/index"}>Clothes</Link>
     },
     {
-        key: "/Book/index",
-        label: <Link to={"/Book/index"}>Books</Link>
+        key: "/shoe/index",
+        label: <Link to={"/Shoe/index"}>Shoes</Link>
     },
     {
-        key: "/Furniture/index",
+        key: "/furniture/index",
         label: <Link to={"/Furniture/index"}>Furniture</Link>
     },
 ]
@@ -73,6 +73,7 @@ function SideMenu() {
     const navigate = useNavigate();
 
     function handleClick({ key }) {
+        key = key.toLowerCase();
         if (key == "/logout") {
             SessionManager.removeUserSession();
             navigate("/");
@@ -80,7 +81,7 @@ function SideMenu() {
     }
 
     React.useEffect(() => {
-        setKey(location.pathname);
+        setKey(location.pathname.toLowerCase());
     }, [location]);
 
     React.useEffect(() => {

@@ -15,14 +15,14 @@ function ProductSettings(props) {
             <Divider orientation={"center"}>Settings</Divider>
 
             <div style={{ marginTop: "50px", fontWeight: "bold", display: "flex", flexDirection: "row", gap: "20px", justifyContent: "center" }}>
-                <Link to={`/${root}/index`}>
+                <Link to={`/${root}/Index`}>
                     <Button type="primary">
                         <RollbackOutlined />
                     </Button>
                 </Link>
                 {roles.includes("Admin") ? 
                     <>
-                        <Link to={`/product/edit/${root}`}>
+                        <Link to={`/Product/Edit/${root}`}>
                             <Button type="primary">
                                 <EditOutlined />
                             </Button>

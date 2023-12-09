@@ -28,20 +28,20 @@ function App() {
 
                             <Routes>
                                 <Route index path="/" element={<Login />} />
-                                <Route path="/home" element={<Home />} />
-                                <Route path="/register" element={<Register />} />
+                                <Route path="/Home" element={<Home />} />
+                                <Route path="/Register" element={<Register />} />
 
-                                <Route path="/device/index" element={<ProductIndex productsType="Device" />} />
-                                <Route path="/device/read/:id" element={<ProductRead productType="Device" />} />
-                                <Route path="/cloth/index" element={<ProductIndex productsType="Cloth" />} />
-                                <Route path="/cloth/read/:id" element={<ProductRead productType="Cloth" />} />
-                                <Route path="/book/index" element={<ProductIndex productsType="Book" />} />
-                                <Route path="/book/read/:id" element={<ProductRead productType="Book" />} />
-                                <Route path="/furniture/index" element={<ProductIndex productsType="Furniture" />} />
-                                <Route path="/furniture/read/:id" element={<ProductRead productType="Furniture" />} />
+                                <Route path="/Device/index" element={<ProductIndex productsType="Device" />} />
+                                <Route path="/Device/read/:id" element={<ProductRead productType="Device" />} />
+                                <Route path="/Cloth/index" element={<ProductIndex productsType="Cloth" />} />
+                                <Route path="/Cloth/read/:id" element={<ProductRead productType="Cloth" />} />
+                                <Route path="/Shoe/index" element={<ProductIndex productsType="Shoe" />} />
+                                <Route path="/shoe/read/:id" element={<ProductRead productType="Shoe" />} />
+                                <Route path="/Furniture/index" element={<ProductIndex productsType="Furniture" />} />
+                                <Route path="/Furniture/read/:id" element={<ProductRead productType="Furniture" />} />
 
-                                <Route path="/product/create" element={<ProductCreate />} />
-                                <Route path="/product/edit/:selectedType" element={<ProductEdit />} />
+                                <Route path="/Product/Create" element={<ProductCreate />} />
+                                <Route path="/Product/Edit/:selectedType" element={<ProductEdit />} />
                             </Routes>
                         </div>
 

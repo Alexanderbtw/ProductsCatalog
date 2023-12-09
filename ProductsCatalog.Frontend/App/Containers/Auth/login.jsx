@@ -13,7 +13,7 @@ function Login() {
 
     React.useEffect(() => {
         if (SessionManager.isAuth()) {
-            navigate("/home");
+            navigate("/Home");
         }
     }, [])
 
@@ -22,7 +22,7 @@ function Login() {
 
         const ans = await PostLogin(user)
         if (ans?.token) {
-            navigate("/home");
+            navigate("/Home");
         } else {
             console.log({ ans });
             setError(["Unknown Username or Password"]);

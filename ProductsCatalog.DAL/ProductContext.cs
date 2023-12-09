@@ -7,7 +7,7 @@ namespace ProductsCatalog.DAL
     {
         public DbSet<Device> Devices { get; set; }
         public DbSet<Cloth> Clothes { get; set; }
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Shoe> Shoes { get; set; }
         public DbSet<Furniture> Furnitures { get; set; }
 
         public ProductContext() : base() { }

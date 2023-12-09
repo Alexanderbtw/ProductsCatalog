@@ -11,7 +11,7 @@ import ImageUpload from '../Shared/imageUpload.jsx';
 import SessionManager from '../Auth/sessionManager.js';
 import DeviceFormItems from './FormItems/deviceFormItems.jsx';
 import ClothFormItems from './FormItems/clothFormItems.jsx';
-import BookFormItems from './FormItems/bookFormItems.jsx';
+import ShoeFormItems from './FormItems/shoeFormItems.jsx';
 import FurnitureFormItems from './FormItems/furnitureFormItems.jsx';
 
 function ProductEdit() {
@@ -36,7 +36,7 @@ function ProductEdit() {
             .then(result => result.text())
             .then((result) => {
                 console.log(result);
-                navigate(`/${selectedType}/read/` + result);
+                navigate(`/${selectedType}/Read/` + result);
             })
             .catch((error) => {
                 console.log({ error });
@@ -58,9 +58,9 @@ function ProductEdit() {
         items = (
             <ClothFormItems />
         );
-    } else if (selectedType == 'Book') {
+    } else if (selectedType == 'Shoe') {
         items = (
-            <BookFormItems />
+            <ShoeFormItems />
         );
     } else if (selectedType == 'Furniture') {
         items = (

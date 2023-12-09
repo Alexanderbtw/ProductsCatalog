@@ -112,7 +112,7 @@ function ProductIndex(props) {
                 onRow={(record, index) => {
                     return {
                         onClick: (event) => {
-                            navigate(`/${props.productsType}/read/` + record.id)
+                            navigate(`/${props.productsType}/Read/` + record.id)
                         }
                     }
                 }}

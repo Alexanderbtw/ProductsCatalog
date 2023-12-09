@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Repositories;
+using System.Text.Json.Nodes;
 
 namespace ProductsCatalog.Frontend.Controllers
 {
@@ -13,10 +14,13 @@ namespace ProductsCatalog.Frontend.Controllers
     public class ClothController : Controller
     {
         private readonly EFRepository<Cloth, ProductContext> clothRepo;
+        private readonly ILogger logger;
 
-        public ClothController(EFRepository<Cloth, ProductContext> repo)
+        public ClothController(EFRepository<Cloth, ProductContext> repo, ILogger<ClothController> _logger)
         {
             clothRepo = repo;
+            logger = _logger;
+            //Initialize().GetAwaiter().GetResult();
         }
 
         [HttpGet]
@@ -100,6 +104,47 @@ namespace ProductsCatalog.Frontend.Controllers
             clothRepo.Save();
 
             return Content(cloth.Id.ToString());
+        }
+
+        [NonAction]
+        private async Task Initialize()
+        {
+            string url = "https://api.escuelajs.co/api/v1/products/?categoryId=1";
+
+            using HttpClient httpClient = new HttpClient();
+            var response = await httpClient.GetFromJsonAsync<List<JsonNode>>(url);
+
+            try
+            {
+                foreach (var node in response)
+                {
+                    string pictureUrl = (string)node["images"][0];
+                    var pictureResponse = await httpClient.GetAsync(pictureUrl);
+                    byte[]? pictureArray = null;
+                    if (pictureResponse.IsSuccessStatusCode)
+                    {
+                        pictureArray = await pictureResponse.Content.ReadAsByteArrayAsync();
+                    }
+
+                    var creationTime = DateTime.Parse((string)node["creationAt"]);
+
+                    clothRepo.Add(new Cloth()
+                    {
+                        Title = (string)node["title"],
+                        Price = (decimal)node["price"],
+                        Description = (string)node["description"],
+                        Picture = pictureArray != null ? Convert.ToBase64String(pictureArray) : null,
+                        CreationTime = DateTime.SpecifyKind(creationTime, DateTimeKind.Utc),
+                        Cathegory = "Automatically"
+                    });
+                }
+
+                clothRepo.Save();
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical("Error during initialization: {0}", ex.Message);
+            }
         }
     }
 }

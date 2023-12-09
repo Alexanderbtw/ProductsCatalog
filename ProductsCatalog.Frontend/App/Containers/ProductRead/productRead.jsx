@@ -16,7 +16,7 @@ function ProductRead(props) {
 
     function deleteHandler(id) {
         dispatch(deleteProduct(id, props.productType))
-        navigate(`/${props.productType}/index/`);
+        navigate(`/${props.productType}/Index`);
     }
 
     React.useEffect(() => {

@@ -9,7 +9,7 @@ import ImageUpload from '../Shared/imageUpload.jsx';
 import SessionManager from '../Auth/sessionManager.js';
 import DeviceFormItems from './FormItems/deviceFormItems.jsx';
 import ClothFormItems from './FormItems/clothFormItems.jsx';
-import BookFormItems from './FormItems/bookFormItems.jsx';
+import ShoeFormItems from './FormItems/shoeFormItems.jsx';
 import FurnitureFormItems from './FormItems/furnitureFormItems.jsx';
 
 function ProductCreate() {
@@ -32,7 +32,7 @@ function ProductCreate() {
         })
             .then(result => result.text())
             .then((result) => {
-                navigate(`/${selectedType}/read/` + result);
+                navigate(`/${selectedType}/Read/` + result);
             })
             .catch((error) => {
                 console.log({ error });
@@ -58,9 +58,9 @@ function ProductCreate() {
         items = (
             <ClothFormItems />
         );
-    } else if (selectedType == 'Book') {
+    } else if (selectedType == 'Shoe') {
         items = (
-            <BookFormItems />
+            <ShoeFormItems />
         );
     } else if (selectedType == 'Furniture') {
         items = (
@@ -94,7 +94,7 @@ function ProductCreate() {
                 <Radio.Group value={selectedType} onChange={handleChange}>
                     <Radio.Button value="Device">Device</Radio.Button>
                     <Radio.Button value="Cloth">Cloth</Radio.Button>
-                    <Radio.Button value="Book">Book</Radio.Button>
+                    <Radio.Button value="Shoe">Shoe</Radio.Button>
                     <Radio.Button value="Furniture">Furniture</Radio.Button>
                 </Radio.Group>
             </Divider>
