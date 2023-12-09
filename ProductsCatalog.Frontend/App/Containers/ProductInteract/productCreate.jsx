@@ -112,13 +112,20 @@ function ProductCreate() {
                     span: 14,
                 }}
             >
-                <Form.Item name="id" hidden={true} />
-                <Form.Item name="creationTime" hidden={true} />
-
-                <Form.Item name="title" label="Title" required hasFeedback >
+                <Form.Item
+                    name="title"
+                    label="Title"
+                    rules={[{ required: true }]}
+                    hasFeedback >
                     <Input />
                 </Form.Item>
-                <Form.Item name="price" label="Price" required hasFeedback>
+
+                <Form.Item
+                    name="price"
+                    label="Price"
+                    hasFeedback
+                    rules={[{required: true}]}
+                >
                     <InputNumber
                         style={{ width: 'auto' }}
                         min={0}
@@ -128,16 +135,31 @@ function ProductCreate() {
                         addonBefore="$"
                     />
                 </Form.Item>
-                <Form.Item name="cathegory" label="Cathegory" required hasFeedback>
+
+                <Form.Item
+                    name="cathegory"
+                    label="Cathegory"
+                    rules={[{ required: true }]}
+                    hasFeedback>
                     <Input />
                 </Form.Item>
-                <Form.Item name="description" label="Description" required hasFeedback>
+
+                <Form.Item
+                    name="description"
+                    label="Description"
+                    rules={[{ required: true }]}
+                    hasFeedback>
                     <TextArea rows={4} />
                 </Form.Item>
-                <Form.Item name="picture" label="Picture">
+
+                <Form.Item
+                    name="picture"
+                    label="Picture">
                     <ImageUpload />
                 </Form.Item>
+
                 {items}
+
                 <Form.Item
                     wrapperCol={{
                         offset: 4,

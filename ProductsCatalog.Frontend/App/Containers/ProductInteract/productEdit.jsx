@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import { Form, Input, InputNumber, Button } from 'antd';
 const { TextArea } = Input;
 
-import DeviceFormItems from './FormItems/deviceFormItems.jsx';
-import ClothFormItems from './FormItems/clothFormItems.jsx';
 import ImageUpload from '../Shared/imageUpload.jsx';
 import SessionManager from '../Auth/sessionManager.js';
+import DeviceFormItems from './FormItems/deviceFormItems.jsx';
+import ClothFormItems from './FormItems/clothFormItems.jsx';
+import BookFormItems from './FormItems/bookFormItems.jsx';
+import FurnitureFormItems from './FormItems/furnitureFormItems.jsx';
 
 function ProductEdit() {
     let { selectedType } = useParams();
@@ -56,6 +58,14 @@ function ProductEdit() {
         items = (
             <ClothFormItems />
         );
+    } else if (selectedType == 'Book') {
+        items = (
+            <BookFormItems />
+        );
+    } else if (selectedType == 'Furniture') {
+        items = (
+            <FurnitureFormItems />
+        );
     }
 
     if (isLoading) {
@@ -99,10 +109,20 @@ function ProductEdit() {
                 <Form.Item name="id" hidden={true} />
                 <Form.Item name="creationTime" hidden={true} />
 
-                <Form.Item name="title" label="Title" required hasFeedback >
+                <Form.Item
+                    name="title"
+                    label="Title"
+                    rules={[{ required: true }]}
+                    hasFeedback >
                     <Input />
                 </Form.Item>
-                <Form.Item name="price" label="Price" required hasFeedback>
+
+                <Form.Item
+                    name="price"
+                    label="Price"
+                    hasFeedback
+                    rules={[{ required: true }]}
+                >
                     <InputNumber
                         style={{ width: 'auto' }}
                         min={0}
@@ -112,16 +132,31 @@ function ProductEdit() {
                         addonBefore="$"
                     />
                 </Form.Item>
-                <Form.Item name="cathegory" label="Cathegory" required hasFeedback>
+
+                <Form.Item
+                    name="cathegory"
+                    label="Cathegory"
+                    rules={[{ required: true }]}
+                    hasFeedback>
                     <Input />
                 </Form.Item>
-                <Form.Item name="description" label="Description" required hasFeedback>
+
+                <Form.Item
+                    name="description"
+                    label="Description"
+                    rules={[{ required: true }]}
+                    hasFeedback>
                     <TextArea rows={4} />
                 </Form.Item>
-                <Form.Item name="picture" label="Picture">
+
+                <Form.Item
+                    name="picture"
+                    label="Picture">
                     <ImageUpload />
                 </Form.Item>
+
                 {items}
+
                 <Form.Item
                     wrapperCol={{
                         offset: 4,
