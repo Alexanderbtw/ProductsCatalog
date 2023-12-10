@@ -37,9 +37,10 @@ function ProductCreate() {
             .catch((error) => {
                 console.log({ error });
                 setError("Unknown error");
+            })
+            .finally(() => {
+                setLoading(false);
             });
-
-        setLoading(false);
     }
 
     function onSubmitFailed(error) {
@@ -50,22 +51,19 @@ function ProductCreate() {
         setType(event.target.value);
     }
 
-    if (selectedType == 'Device') {
-        items = (
-            <DeviceFormItems />
-        );
-    } else if (selectedType == 'Cloth') {
-        items = (
-            <ClothFormItems />
-        );
-    } else if (selectedType == 'Shoe') {
-        items = (
-            <ShoeFormItems />
-        );
-    } else if (selectedType == 'Furniture') {
-        items = (
-            <FurnitureFormItems />
-        );
+    switch (selectedType) {
+        case 'Device':
+            items = (<DeviceFormItems />);
+            break;
+        case 'Cloth':
+            items = (<ClothFormItems />);
+            break;
+        case 'Shoe':
+            items = (<ShoeFormItems />);
+            break;
+        case 'Furniture':
+            items = (<FurnitureFormItems />);
+            break;
     }
 
     if (isLoading) {

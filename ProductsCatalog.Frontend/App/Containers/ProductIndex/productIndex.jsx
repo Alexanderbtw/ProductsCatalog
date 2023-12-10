@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Spin, Divider, Input } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Table, Divider, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { getProducts } from './productIndexActions.jsx';
@@ -10,10 +10,11 @@ const colsInfo = [
     {
         title: 'Picture',
         key: 'picture',
+        dataIndex: 'picture',
         width: '10%',
-        render: (text, record) => (
+        render: (picture) => (
             <img
-                src={record.picture ? 'data:image/jpeg;base64,' + record.picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width: "150px", height: "150px", borderRadius:"25px", objectFit:"cover" }}
+                src={picture ? 'data:image/jpeg;base64,' + picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width: "150px", height: "150px", borderRadius: "25px", objectFit: "cover" }}
             />
         )
     },
@@ -28,15 +29,18 @@ const colsInfo = [
         dataIndex: 'cathegory',
         key: 'cathegory',
         width: '10%'
+
     },
     {
         title: 'Price',
         key: 'price',
+        dataIndex: 'price',
         width: '15%',
-        render: (text, record) => (
-            <>{"$" + record.price}</>
-        )
-        
+        render: (price) => (
+            <>{"$" + price}</>
+        ),
+        sorter: () => { }
+
     },
     {
         title: 'Description',
@@ -47,37 +51,43 @@ const colsInfo = [
     {
         title: 'Creation Date',
         key: 'creationTime',
+        dataIndex: 'creationTime',
         width: '20%',
-        render: (text, record) => (
-            <>{new Date(record.creationTime).toLocaleDateString()}</>
-        )
+        render: (creationTime) => (
+            <>{new Date(creationTime).toLocaleDateString()}</>
+        ),
+        sorter: () => { }
     },
 ];
 
 function ProductIndex(props) {
-    const [current, setCurrent] = React.useState(1);
+    const [curPagination, setPagination] = React.useState({});
     const [searchValue, setSearch] = React.useState("");
+    const [sorting, setSorting] = React.useState({
+        order: "",
+        field: ""
+    });
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    let location = useLocation();
 
     React.useEffect(() => {
-        dispatch(getProducts(new Object, props.productsType));
-    }, []);
+        dispatch(getProducts(curPagination, props.productsType, searchValue, sorting.field, sorting.order == "descend"));
+    }, [curPagination, props.productsType, searchValue, sorting]);
 
-    React.useEffect(() => {
-        dispatch(getProducts(new Object, props.productsType));
-    }, [location]);
-
-    function handleTableChange(pagination, filters, sorter) {
-        dispatch(getProducts(pagination, props.productsType, searchValue));
-        setCurrent(pagination.current);
+    function onChange(pagination, filters, sorter, extra) {
+        setPagination({
+            ...pagination
+        });
+        setSorting({
+            order: sorter.order,
+            field: sorter.order ? sorter.field : ""
+        });
     }
 
     function onSearch(value) {
-        dispatch(getProducts(new Object, props.productsType, value));
         setSearch(value);
-        setCurrent(1);
+        setPagination({});
     }
 
     let productsInfo = useSelector(state => state.productIndexReducer.productsInfo).map(item => ({ ...item, key: item.id }));
@@ -107,8 +117,8 @@ function ProductIndex(props) {
                 dataSource={productsInfo}
                 columns={colsInfo}
                 loading={isLoading}
-                pagination={{ total: totalCount, current: current }}
-                onChange={handleTableChange}
+                pagination={{ total: totalCount, current: curPagination.pagination }}
+                onChange={onChange}
                 onRow={(record, index) => {
                     return {
                         onClick: (event) => {

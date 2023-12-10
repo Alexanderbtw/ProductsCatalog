@@ -41,31 +41,31 @@ function ProductEdit() {
             .catch((error) => {
                 console.log({ error });
                 setError("Unknown error");
+            })
+            .finally(() => {
+                setLoading(false);
             });
-
-        setLoading(false);
     }
 
     function onSubmitFailed(error) {
         console.log(error);
     }
 
-    if (selectedType == 'Device') {
-        items = (
-            <DeviceFormItems />
-        );
-    } else if (selectedType == 'Cloth') {
-        items = (
-            <ClothFormItems />
-        );
-    } else if (selectedType == 'Shoe') {
-        items = (
-            <ShoeFormItems />
-        );
-    } else if (selectedType == 'Furniture') {
-        items = (
-            <FurnitureFormItems />
-        );
+    switch (selectedType) {
+        case 'Device':
+            items = (<DeviceFormItems />);
+            break;
+        case 'Cloth':
+            items = (<ClothFormItems />);
+            break;
+        case 'Shoe':
+            items = (<ShoeFormItems />);
+            break;
+        case 'Furniture':
+            items = (<FurnitureFormItems />);
+            break;
+        default:
+            setError("Unknown product type");
     }
 
     if (isLoading) {

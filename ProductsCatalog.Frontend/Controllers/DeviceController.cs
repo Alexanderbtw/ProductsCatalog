@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
+using ProductsCatalog.DAL.Extensions;
 using ProductsCatalog.DAL.Repositories;
+using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Text.Json.Nodes;
 
 namespace ProductsCatalog.Frontend.Controllers
@@ -25,11 +29,23 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "", [FromQuery] string sortField = "Id", [FromQuery] bool isDescend = false)
         {
             search = search.ToLower();
 
-            var request = deviceRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search) || p.Cathegory.ToLower().Contains(search));
+            var request = deviceRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search));
+
+            if (!sortField.IsNullOrEmpty())
+            {
+                var propName = char.ToUpper(sortField[0]) + sortField.Substring(1);
+
+                if (isDescend)
+                    request = request.OrderByDescending<Device>(propName);
+                else
+                    request = request.OrderBy<Device>(propName);
+            }    
+            
+
             int totalCount = request.Count();
 
             List<Device> productsInfo = request
