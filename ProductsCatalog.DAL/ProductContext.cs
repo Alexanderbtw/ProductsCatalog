@@ -14,7 +14,7 @@ namespace ProductsCatalog.DAL
 
         public ProductContext(DbContextOptions options) : base(options)
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
             //Database.Migrate();
         }
 

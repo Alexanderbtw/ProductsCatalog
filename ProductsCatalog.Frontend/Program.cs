@@ -45,7 +45,7 @@ namespace ProductsCatalog.Frontend
 
             builder.Services.AddAuthorization();
 
-            builder.Services.AddDbContext<ProductContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<ProductContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DockerConnection")));
             builder.Services.AddScoped(typeof(EFRepository<,>));
 
             var app = builder.Build();

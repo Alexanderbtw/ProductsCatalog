@@ -1,0 +1,42 @@
+version: '3.4'
+
+networks:
+    product-net:
+        driver: bridge
+
+services:
+  productscatalog.frontend:
+    image: ${DOCKER_REGISTRY-}productscatalogfrontend
+    build:
+      context: .
+      dockerfile: ProductsCatalog.Frontend/Dockerfile
+    networks:
+      - product-net
+    depends_on:
+      - db
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=my_secret_pass
+      - POSTGRES_DB=ProductsCatalog
+    volumes:
+      - npgsql-products-data:/var/lib/postgresql/data
+    ports:
+       - 5432:5432
+    networks:
+      - product-net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - product-net
+    depends_on:
+      - db
+
+volumes:
+    npgsql-products-data:
+      
