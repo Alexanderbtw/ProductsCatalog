@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
+using ProductsCatalog.DAL.Extensions;
 using ProductsCatalog.DAL.Repositories;
 using System.Text.Json.Nodes;
 
@@ -25,11 +27,33 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "", [FromQuery] string sortField = "Id", [FromQuery] bool isDescend = false, [FromQuery] string selectedCathegories = "")
         {
-            search = search.ToLower();
+            var request = shoeRepo.GetAllWithoutTracking();
 
-            var request = shoeRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search) || p.Cathegory.ToLower().Contains(search));
+            if (!search.IsNullOrEmpty())
+            {
+                search = search.ToLower();
+                request = request.Where(p => p.Title.ToLower().Contains(search));
+            }
+
+            string[] cathegories = request.Select(p => p.Cathegory).Distinct().ToArray();
+
+            if (!selectedCathegories.IsNullOrEmpty())
+            {
+                request = request.Where(p => selectedCathegories.Contains(p.Cathegory));
+            }
+
+            if (!sortField.IsNullOrEmpty())
+            {
+                var propName = char.ToUpper(sortField[0]) + sortField.Substring(1);
+
+                if (isDescend)
+                    request = request.OrderByDescending<Shoe>(propName);
+                else
+                    request = request.OrderBy<Shoe>(propName);
+            }
+
             int totalCount = request.Count();
 
             List<Shoe> productsInfo = request
@@ -37,7 +61,7 @@ namespace ProductsCatalog.Frontend.Controllers
                 .Take(pageSize)
                 .ToList();
 
-            return new JsonResult(new { productsInfo, totalCount });
+            return new JsonResult(new { productsInfo, cathegories, totalCount });
         }
 
         [HttpGet]

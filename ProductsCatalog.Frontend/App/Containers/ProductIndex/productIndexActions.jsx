@@ -18,6 +18,7 @@ export function receiveProducts(data) {
     return {
         type: GET_PRODUCTS_SUCCESS,
         productsInfo: data.productsInfo,
+        cathegories: data.cathegories,
         totalCount: data.totalCount
     };
 }
@@ -29,12 +30,20 @@ export function errorReceiveProducts(err) {
     };
 }
 
-export function getProducts(pagination, productsType, searchValue = "", sortField = "", isDescend = false) {
+export function getProducts(pagination, productsType, searchValue = "", sortField = "", isDescend = false, selectedCathegories = []) {
     let page = !pagination.current ? 1 : pagination.current;
     let pageSize = !pagination.pageSize ? 10 : pagination.pageSize;
 
     return (dispatch) => {
         let queryTrailer = `?page=${page}&pageSize=${pageSize}&search=${searchValue}&sortField=${sortField}&isDescend=${isDescend}`;
+
+        if (selectedCathegories.length > 0) {
+            queryTrailer += '&selectedCathegories=';
+
+            for (const c of selectedCathegories) {
+                queryTrailer += c;
+            }
+        }
 
         dispatch(startReceiving());
 

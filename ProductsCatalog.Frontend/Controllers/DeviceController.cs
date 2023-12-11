@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
@@ -29,11 +30,22 @@ namespace ProductsCatalog.Frontend.Controllers
 
         [HttpGet]
         [Route("getall")]
-        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "", [FromQuery] string sortField = "Id", [FromQuery] bool isDescend = false)
+        public IActionResult GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "", [FromQuery] string sortField = "Id", [FromQuery] bool isDescend = false, [FromQuery] string selectedCathegories = "")
         {
-            search = search.ToLower();
+            var request = deviceRepo.GetAllWithoutTracking();
 
-            var request = deviceRepo.GetAllWithoutTracking().Where(p => p.Title.ToLower().Contains(search));
+            if (!search.IsNullOrEmpty())
+            {
+                search = search.ToLower();
+                request = request.Where(p => p.Title.ToLower().Contains(search));
+            }
+
+            string[] cathegories = request.Select(p => p.Cathegory).Distinct().ToArray();
+
+            if (!selectedCathegories.IsNullOrEmpty())
+            {
+                request = request.Where(p => selectedCathegories.Contains(p.Cathegory));
+            }
 
             if (!sortField.IsNullOrEmpty())
             {
@@ -43,8 +55,7 @@ namespace ProductsCatalog.Frontend.Controllers
                     request = request.OrderByDescending<Device>(propName);
                 else
                     request = request.OrderBy<Device>(propName);
-            }    
-            
+            }
 
             int totalCount = request.Count();
 
@@ -53,7 +64,7 @@ namespace ProductsCatalog.Frontend.Controllers
                 .Take(pageSize)
                 .ToList();
 
-            return new JsonResult(new { productsInfo, totalCount });
+            return new JsonResult(new { productsInfo, cathegories, totalCount });
         }
 
         [HttpGet]

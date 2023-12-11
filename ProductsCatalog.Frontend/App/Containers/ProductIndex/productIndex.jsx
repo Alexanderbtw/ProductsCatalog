@@ -6,92 +6,107 @@ import { Helmet } from 'react-helmet';
 
 import { getProducts } from './productIndexActions.jsx';
 
-const colsInfo = [
-    {
-        title: 'Picture',
-        key: 'picture',
-        dataIndex: 'picture',
-        width: '10%',
-        render: (picture) => (
-            <img
-                src={picture ? 'data:image/jpeg;base64,' + picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width: "150px", height: "150px", borderRadius: "25px", objectFit: "cover" }}
-            />
-        )
-    },
-    {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-        width: '20%'
-    },
-    {
-        title: 'Cathegory',
-        dataIndex: 'cathegory',
-        key: 'cathegory',
-        width: '10%'
-
-    },
-    {
-        title: 'Price',
-        key: 'price',
-        dataIndex: 'price',
-        width: '15%',
-        render: (price) => (
-            <>{"$" + price}</>
-        ),
-        sorter: () => { }
-
-    },
-    {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-        width: '25%'
-    },
-    {
-        title: 'Creation Date',
-        key: 'creationTime',
-        dataIndex: 'creationTime',
-        width: '20%',
-        render: (creationTime) => (
-            <>{new Date(creationTime).toLocaleDateString()}</>
-        ),
-        sorter: () => { }
-    },
-];
-
 function ProductIndex(props) {
     const [curPagination, setPagination] = React.useState({});
     const [searchValue, setSearch] = React.useState("");
+    const [selectedCathegories, setCathegories] = React.useState([]);
     const [sorting, setSorting] = React.useState({
         order: "",
         field: ""
     });
 
+    let productsInfo = useSelector(state => state.productIndexReducer.productsInfo).map(item => ({ ...item, key: item.id }));
+    let { isLoading, error, totalCount, cathegories } = useSelector(state => state.productIndexReducer);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const colsInfo = [
+        {
+            title: 'Picture',
+            key: 'picture',
+            dataIndex: 'picture',
+            width: '10%',
+            render: (picture) => (
+                <img
+                    src={picture ? 'data:image/jpeg;base64,' + picture : '/images/image_error_full.png'} alt="Product Picture" style={{ width: "150px", height: "150px", borderRadius: "25px", objectFit: "cover" }}
+                />
+            )
+        },
+        {
+            title: 'Title',
+            dataIndex: 'title',
+            key: 'title',
+            width: '20%'
+        },
+        {
+            title: 'Cathegory',
+            dataIndex: 'cathegory',
+            key: 'cathegory',
+            width: '10%',
+            filters: cathegories.map(c => {
+                return {
+                    text: c,
+                    value: c
+                };
+            })
+        },
+        {
+            title: 'Price',
+            key: 'price',
+            dataIndex: 'price',
+            width: '15%',
+            render: (price) => (
+                <>{"$" + price}</>
+            ),
+            sorter: () => { }
+
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            width: '25%'
+        },
+        {
+            title: 'Creation Date',
+            key: 'creationTime',
+            dataIndex: 'creationTime',
+            width: '20%',
+            render: (creationTime) => (
+                <>{new Date(creationTime).toLocaleDateString()}</>
+            ),
+            sorter: () => { }
+        },
+    ];
+
     React.useEffect(() => {
-        dispatch(getProducts(curPagination, props.productsType, searchValue, sorting.field, sorting.order == "descend"));
-    }, [curPagination, props.productsType, searchValue, sorting]);
+        dispatch(getProducts(curPagination, props.productsType, searchValue, sorting.field, sorting.order == "descend", selectedCathegories));
+    }, [curPagination, searchValue, sorting, selectedCathegories]);
+
+    React.useEffect(() => {
+        setCathegories([]);
+        setSearch("");
+        setPagination({});
+        setSorting({
+            order: "",
+            field: ""
+        });
+    }, [props.productsType])
 
     function onChange(pagination, filters, sorter, extra) {
-        setPagination({
-            ...pagination
-        });
+        setPagination(pagination);
         setSorting({
             order: sorter.order,
             field: sorter.order ? sorter.field : ""
         });
+        setCathegories(filters.cathegory ?? []);
     }
 
     function onSearch(value) {
         setSearch(value);
         setPagination({});
     }
-
-    let productsInfo = useSelector(state => state.productIndexReducer.productsInfo).map(item => ({ ...item, key: item.id }));
-    let { isLoading, error, totalCount } = useSelector(state => state.productIndexReducer);
 
     if (error) {
         return (
