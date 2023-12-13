@@ -1,9 +1,9 @@
 ﻿import SessionManager from "./sessionManager.js";
 
-const BaseURL = "https://localhost:7142/";
+const BaseURL = "http://localhost:5142/auth/";
 
 export function PostLogin(user) {
-    return fetch(BaseURL + "api/Auth/Login", {
+    return fetch(BaseURL + "Auth/Login", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
@@ -19,7 +19,7 @@ export function PostLogin(user) {
 }
 
 export function CreateUser(user) {
-    return fetch(BaseURL + "api/User/Create", {
+    return fetch(BaseURL + "User/Create", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

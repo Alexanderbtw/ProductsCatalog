@@ -1,11 +1,12 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
+
 WORKDIR /app
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - 
 RUN apt-get install -y nodejs
+EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 RUN apt-get update
@@ -30,7 +31,7 @@ RUN dotnet build "./ProductsCatalog.Frontend.csproj" -c $BUILD_CONFIGURATION -o 
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./ProductsCatalog.Frontend.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./ProductsCatalog.Frontend.csproj" -c $BUILD_CONFIGURATION -o /app/publish
 
 FROM base AS final
 WORKDIR /app

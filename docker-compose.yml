@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 networks:
     product-net:
@@ -14,19 +14,32 @@ services:
       - product-net
     depends_on:
       - db
-      - auth-service
+      - auth
+    environment:
+      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=ProductsCatalog;
   
-  auth-service:
+  auth:
+    container_name: auth
+    hostname: auth
     image: "ecommerce-auth"
     build:
       context: D:\C#\Practice\ECommerce
       dockerfile: .\Ordering.API\Dockerfile
-    ports:
-       - 7142:7142
     networks:
       - product-net
     environment:
-      - AuthApiUrl=https://app:7142/
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://auth:5142
+      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=OrderingDb;
+    depends_on:
+      - db
+
+  proxy:
+    image: nginx:mainline
+    networks:
+      - product-net
+    depends_on:
+      - auth
 
   db:
     image: postgres:16.0-alpine3.18
@@ -35,13 +48,14 @@ services:
       - POSTGRES_PASSWORD=my_secret_pass
       - POSTGRES_DB=ProductsCatalog
     volumes:
-      - npgsql-products-data:/var/lib/postgresql/data
+      - products-data:/var/lib/postgresql/data
     ports:
        - 5432:5432
     networks:
       - product-net
 
   adminer:
+    container_name: adminer
     image: adminer
     restart: always
     ports:
@@ -52,5 +66,5 @@ services:
       - db
 
 volumes:
-    npgsql-products-data:
+    products-data:
       
