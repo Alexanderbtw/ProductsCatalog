@@ -6,7 +6,8 @@ networks:
 
 services:
   app:
-    image: ${DOCKER_REGISTRY-}productscatalogfrontend
+    container_name: main_app
+    image: borntowhine/products_catalog
     build:
       context: .
       dockerfile: ProductsCatalog.Frontend/Dockerfile
@@ -15,42 +16,34 @@ services:
     depends_on:
       - db
       - auth
-    environment:
-      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=ProductsCatalog;
   
   auth:
     container_name: auth
     hostname: auth
-    image: "ecommerce-auth"
+    image: borntowhine/auth
     build:
       context: D:\C#\Practice\ECommerce
       dockerfile: .\Ordering.API\Dockerfile
     networks:
       - product-net
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://auth:5142
-      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=OrderingDb;
     depends_on:
       - db
 
   proxy:
+    container_name: proxy
     image: nginx:mainline
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
       - product-net
     depends_on:
       - auth
 
   db:
+    container_name: db
     image: postgres:16.0-alpine3.18
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=my_secret_pass
-      - POSTGRES_DB=ProductsCatalog
     volumes:
       - products-data:/var/lib/postgresql/data
-    ports:
-       - 5432:5432
     networks:
       - product-net
 
@@ -58,8 +51,6 @@ services:
     container_name: adminer
     image: adminer
     restart: always
-    ports:
-      - 8080:8080
     networks:
       - product-net
     depends_on:

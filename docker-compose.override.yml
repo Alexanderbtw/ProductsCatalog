@@ -3,17 +3,32 @@ version: '3.9'
 services:
   app:
     environment:
+      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=ProductsCatalog;
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=80
     ports:
       - 8001:80
   
   auth:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://auth:5142
+      - ConnectionString=User ID=postgres;Password=my_secret_pass;Host=db;Port=5432;Database=OrderingDb;
     ports:
        - 8002:5142
 
   proxy:
-    volumes:
-       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
        - 5142:5142
+
+  db:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=my_secret_pass
+      - POSTGRES_DB=ProductsCatalog
+    ports:
+       - 5432:5432
+
+  adminer:
+    ports:
+      - 8080:8080
