@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
-using ProductsCatalog.DAL.Repositories;
 
 namespace ProductsCatalog.Tests
 {

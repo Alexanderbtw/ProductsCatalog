@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductsCatalog.Business.Models;
 using ProductsCatalog.DAL;
 using ProductsCatalog.DAL.Extensions;
 using ProductsCatalog.DAL.Repositories;
-using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Text.Json.Nodes;
 
 namespace ProductsCatalog.Frontend.Controllers

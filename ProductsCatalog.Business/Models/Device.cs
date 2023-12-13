@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ProductsCatalog.Business.Models
+﻿namespace ProductsCatalog.Business.Models
 {
     public class Device : IdInfo
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductsCatalog.Business.Models;
 
 namespace ProductsCatalog.DAL.Repositories
 {

@@ -1,7 +1,4 @@
-﻿using ProductsCatalog.Frontend.JSONConverters;
-using System.Text.Json.Serialization;
-
-namespace ProductsCatalog.Business.Models
+﻿namespace ProductsCatalog.Business.Models
 {
     public class IdInfo
     {
