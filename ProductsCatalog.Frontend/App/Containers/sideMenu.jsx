@@ -17,7 +17,7 @@ const defaultItems = [
                 label: <Link to={"/"}><LoginOutlined /> Login</Link>
             },
             {
-                key: "/Register",
+                key: "/register",
                 label: <Link to={"/Register"}><UserAddOutlined /> Register</Link>
             }
         ]
