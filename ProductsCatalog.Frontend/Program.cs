@@ -67,10 +67,6 @@ namespace ProductsCatalog.Frontend
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
-                name: "auth",
-                pattern: "{controller=Auth}/{action}");
-
-            app.MapControllerRoute(
                 name: "api",
                 pattern: "api/{controller=Default}/{action=Index}/{id?}");
 
