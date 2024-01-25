@@ -50,7 +50,6 @@ services:
   adminer:
     container_name: adminer
     image: adminer
-    restart: always
     networks:
       - product-net
     depends_on:
